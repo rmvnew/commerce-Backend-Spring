@@ -1,11 +1,11 @@
 package com.delta.commerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,4 +35,8 @@ public class Profile {
             inverseJoinColumns = @JoinColumn(name = "profile_id"))
     private Set<Transaction> transactions;
 
+    public Profile(String profileName, Set<Transaction> transactions) {
+        this.profileName = profileName;
+        this.transactions = transactions;
+    }
 }
