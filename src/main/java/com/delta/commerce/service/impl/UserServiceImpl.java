@@ -18,6 +18,8 @@ import com.delta.commerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -94,6 +96,18 @@ public class UserServiceImpl implements UserService {
         var user = this.userRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCustom.NOT_FOUND));
 
+        var currentUser = this.getLoggedInUser();
+
+        var isAdmin = currentUser.getProfiles().stream()
+                .anyMatch(profile -> profile.getProfileName().equalsIgnoreCase("ADMIN"));
+
+        if (!isAdmin) {
+            if (!this.isUserLoggedIn(user)) {
+                throw new CustomException(ErrorCustom.USER_UPDATE_NOT_ALLOWED);
+            }
+        }
+
+
         if (!dto.getRoles().isEmpty()) {
             Set<Profile> roles = dto.getRoles().stream()
                     .map(roleId -> this.profileRepository.findById((long) roleId))
@@ -169,5 +183,18 @@ public class UserServiceImpl implements UserService {
         isRegistered.setActive(!isRegistered.isActive());
 
         return this.userMapper.toDto(this.userRepository.save(isRegistered));
+    }
+
+    @Override
+    public User getLoggedInUser() {
+        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findUserByUserEmail(loggedInUsername)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + loggedInUsername));
+    }
+
+    @Override
+    public boolean isUserLoggedIn(User user) {
+        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        return user.getUserEmail().equals(loggedInUsername);
     }
 }

@@ -50,8 +50,8 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_profile",
-            joinColumns = @JoinColumn(name = "profile_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "profile_id"))
     private Set<Profile> profiles;
 
     public User(String userCompleteName, String userEmail,
@@ -67,12 +67,21 @@ public class User implements UserDetails {
         this.profiles = profiles;
     }
 
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return profiles.stream()
+//                .map(profile -> new SimpleGrantedAuthority(profile.getProfileName()))
+//                .collect(Collectors.toList());
+//    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return profiles.stream()
-                .map(profile -> new SimpleGrantedAuthority(profile.getProfileName()))
+                .flatMap(profile -> profile.getTransactions().stream())
+                .map(transaction -> new SimpleGrantedAuthority(transaction.getTransactionName()))
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public String getPassword() {

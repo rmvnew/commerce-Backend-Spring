@@ -8,6 +8,7 @@ public enum ErrorCustom {
     USER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, 101, "User Already exists!"),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, 102, "User not found!"),
     DISABLED_USER(HttpStatus.BAD_REQUEST, 103, "Disabled user!"),
+    USER_UPDATE_NOT_ALLOWED(HttpStatus.BAD_REQUEST, 104, "Disabled user!"),
     ROLE_NOT_EXISTS(HttpStatus.NOT_FOUND, 151, "Role not exists!"),
     OK(HttpStatus.OK, 200, "Success"),
     CREATED(HttpStatus.CREATED, 201, "Created"),

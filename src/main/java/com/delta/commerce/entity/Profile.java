@@ -31,8 +31,8 @@ public class Profile {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "profile_transaction",
-            joinColumns = @JoinColumn(name = "transaction_id"),
-            inverseJoinColumns = @JoinColumn(name = "profile_id"))
+            joinColumns = @JoinColumn(name = "profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "transaction_id"))
     private Set<Transaction> transactions;
 
     public Profile(String profileName, Set<Transaction> transactions) {

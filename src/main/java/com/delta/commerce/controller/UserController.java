@@ -25,13 +25,13 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-//    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN_WRITE')")
     public void createUser(@RequestBody @Valid CreateUserRequestDto dto) {
         this.userService.createUser(dto);
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('USER') || hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN_READ')")
     public ResponseEntity<Page<UserResponse>> getAllUsers(
             @RequestParam(required = false, name = "name") String name,
             Pageable page
@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('USER') || hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('USER_WRITE') || hasAuthority('ADMIN_WRITE')")
     public ResponseEntity<UserResponse> updateUser(
             @RequestBody @Valid UpdateUserRequestDto dto,
             @PathVariable Long id
@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('USER') || hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN_READ')")
     public ResponseEntity<UserResponse> findById(
             @PathVariable Long id
     ) {
@@ -59,7 +59,6 @@ public class UserController {
 
     @PostMapping(value = "/recover-code")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PreAuthorize("hasAuthority('USER') || hasAuthority('ADMIN')")
     public void recoverCode(
             @RequestParam(required = true, value = "email") String email
     ) {
@@ -68,7 +67,6 @@ public class UserController {
 
     @PostMapping(value = "/recover-pass")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PreAuthorize("hasAuthority('USER') || hasAuthority('ADMIN')")
     public void recoverPassword(
             @RequestBody @Valid RecoverPassRequestDto passDto
     ) {
@@ -76,7 +74,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/change-status/{user_id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN_WRITE')")
     public ResponseEntity<UserResponse> changeStatus(
             @PathVariable Long user_id
     ) {
