@@ -9,6 +9,8 @@ import com.delta.commerce.repository.ProfileRepository;
 import com.delta.commerce.repository.TransactionsRepository;
 import com.delta.commerce.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -50,6 +52,10 @@ public class ProfileServiceImpl implements ProfileService {
         return this.profileRepository.save(profile);
     }
 
+    @Override
+    public Page<Profile> getAllProfiles(String name, Pageable page) {
+        return this.profileRepository.getAllProfiles(name, page);
+    }
 
 
 }
