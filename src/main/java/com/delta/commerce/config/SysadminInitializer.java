@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,9 @@ public class SysadminInitializer implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private TransactionsRepository transactionsRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Value("${USER_EMAIL}")
     private String email;
@@ -67,7 +71,7 @@ public class SysadminInitializer implements ApplicationListener<ContextRefreshed
         user.setProfiles(profiles);
         user.setUserEmail(email);
         user.setUserEnrollment("00001");
-        user.setUserPassword(password);
+        user.setUserPassword(passwordEncoder.encode(password));
         user.setUserCompleteName(adminName);
         user.setActive(true);
         user.setCreateAt(LocalDateTime.now());
