@@ -1,9 +1,11 @@
 package com.delta.commerce.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -19,7 +21,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    private int productId;
+    private Long productId;
 
     @Column(name = "product_name")
     private String productName;
@@ -63,6 +65,8 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id",nullable = false)
+    @ToString.Exclude
+    @JsonIgnore
     private Category category;
 
     public Product(String productName, String productBarcode, String productCode,
