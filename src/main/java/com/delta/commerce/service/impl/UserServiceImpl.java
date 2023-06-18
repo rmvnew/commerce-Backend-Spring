@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
         Set<Profile> profiles = new HashSet<>();
 
-        for (Integer role : dto.getRoles()) {
+        for (Integer role : dto.getProfiles()) {
             profiles.add(this.profileRepository.findById((long) role)
                     .orElseThrow(() -> new CustomException(ErrorCustom.ROLE_NOT_EXISTS)));
         }

@@ -31,6 +31,6 @@ public class CreateUserRequestDto {
 
     @NotEmpty
     @ToString.Exclude
-    Set<Integer> roles;
+    Set<Integer> profiles;
 
 }

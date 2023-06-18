@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @Column(name = "user_password")
     private String userPassword;
 
-    @Column(name = "user_enrollment")
+    @Column(name = "user_enrollment",unique = true)
     private String userEnrollment;
 
     @Column(name = "user_recover_code", nullable = true)
@@ -66,13 +66,6 @@ public class User implements UserDetails {
         this.createAt = createAt;
         this.profiles = profiles;
     }
-
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return profiles.stream()
-//                .map(profile -> new SimpleGrantedAuthority(profile.getProfileName()))
-//                .collect(Collectors.toList());
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
