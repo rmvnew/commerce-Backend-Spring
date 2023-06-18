@@ -77,5 +77,31 @@ public class ProductServiceImpl implements ProductService {
         );
     }
 
+    @Override
+    public Product updateProduct(ProductRequestDto dto, Long id) {
+
+        var product = this.findById(id);
+
+        var category = this.categoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new CustomException(ErrorCustom.CATEGORY_NOT_FOUND));
+
+        product.setUpdateAt(LocalDateTime.now());
+        product.setProductName(dto.getProductName().toUpperCase());
+        product.setProductBarcode(dto.getProductBarcode());
+        product.setProductCode(dto.getProductCode());
+        product.setProductNcm(dto.getProductNcm());
+        product.setProductCfop(dto.getProductCfop());
+        product.setProductUnitOfMeasurement(dto.getProductUnitOfMeasurement());
+        product.setProductQuantity(dto.getProductQuantity());
+        product.setProductMinimumStock(dto.getProductMinimumStock());
+        product.setProductUnitCost(dto.getProductUnitCost());
+        product.setProductUnitPrice(dto.getProductUnitPrice());
+        product.setCategory(category);
+
+        return this.productRepository.save(product);
+
+
+    }
+
 
 }
