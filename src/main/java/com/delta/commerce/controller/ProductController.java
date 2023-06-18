@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('USER_WRITE','ADMIN_WRITE')")
     public ResponseEntity<Product> createProduct(
             @RequestBody @Valid ProductRequestDto dto
     ) {
@@ -27,6 +29,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyAuthority('USER_READ','ADMIN_READ')")
     public ResponseEntity<Product> findById(
             @PathVariable Long id
     ) {
@@ -34,6 +37,7 @@ public class ProductController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('USER_READ','ADMIN_READ')")
     public ResponseEntity<Page<Product>> getAllProduct(
 
             @RequestParam(name = "productName", required = false) String productName,
@@ -50,5 +54,16 @@ public class ProductController {
 
         return ResponseEntity.ok(this.productService.getAllProducts(filter, pageable));
     }
+
+
+    @PutMapping(value = "/{id}")
+    @PreAuthorize("hasAnyAuthority('USER_WRITE','ADMIN_WRITE')")
+    public ResponseEntity<Product> updateProduct(
+            @RequestBody @Valid ProductRequestDto dto,
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(this.productService.updateProduct(dto, id));
+    }
+
 
 }

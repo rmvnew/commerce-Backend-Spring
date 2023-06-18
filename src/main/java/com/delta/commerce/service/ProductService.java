@@ -14,4 +14,6 @@ public interface ProductService {
 
     Page<Product> getAllProducts(ProductFilter filter, Pageable page);
 
+    Product updateProduct(ProductRequestDto dto, Long id);
+
 }
