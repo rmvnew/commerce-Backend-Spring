@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('USER_WRITE') || hasAuthority('ADMIN_WRITE')")
+    @PreAuthorize("hasAnyAuthority('USER_WRITE','ADMIN_WRITE')")
     public ResponseEntity<UserResponse> updateUser(
             @RequestBody @Valid UpdateUserRequestDto dto,
             @PathVariable Long id
