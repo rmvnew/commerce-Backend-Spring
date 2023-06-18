@@ -16,7 +16,9 @@ public enum ErrorCustom {
     BAD_REQUEST(HttpStatus.BAD_REQUEST, 400, "Bad Request"),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 401, "Unauthorized"),
     FORBIDDEN(HttpStatus.FORBIDDEN, 403, "Forbidden"),
-    NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Not Found");
+    NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Not Found"),
+    PRODUCT_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, 500, "Product Already exists!"),
+    CATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, 600, "Category not found");
 
     private final HttpStatus httpStatus;
     private final int code;
