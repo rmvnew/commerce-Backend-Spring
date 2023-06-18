@@ -1,5 +1,6 @@
 package com.delta.commerce.service.impl;
 
+import com.delta.commerce.dto.filter.ProductFilter;
 import com.delta.commerce.dto.request.ProductRequestDto;
 import com.delta.commerce.entity.Product;
 import com.delta.commerce.exception.CustomException;
@@ -8,6 +9,8 @@ import com.delta.commerce.repository.CategoryRepository;
 import com.delta.commerce.repository.ProductRepository;
 import com.delta.commerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -59,6 +62,19 @@ public class ProductServiceImpl implements ProductService {
     public Product findById(Long id) {
         return this.productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCustom.NOT_FOUND));
+    }
+
+    @Override
+    public Page<Product> getAllProducts(ProductFilter filter, Pageable page) {
+
+
+        return this.productRepository.getAllProduct(
+                filter.getProductName(),
+                filter.getProductBarcode() != null ? (filter.getProductBarcode() != "" ? filter.getProductBarcode() : null) : null,
+                filter.getProductCode() != null ? (filter.getProductCode() != "" ? filter.getProductCode() : null) : null,
+                filter.getProductNcm() != null ? (filter.getProductNcm() != "" ? filter.getProductNcm() : null) : null,
+                page
+        );
     }
 
 
