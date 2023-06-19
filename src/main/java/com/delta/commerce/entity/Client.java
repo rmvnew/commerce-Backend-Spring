@@ -49,4 +49,7 @@ public class Client {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @OneToMany(mappedBy = "client")
+    private Set<Sale> sales;
+
 }

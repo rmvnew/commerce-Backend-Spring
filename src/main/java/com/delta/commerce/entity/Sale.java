@@ -34,4 +34,10 @@ public class Sale {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
+
+
+
 }
