@@ -5,6 +5,7 @@ import com.delta.commerce.dto.LoginDto;
 import com.delta.commerce.entity.User;
 import com.delta.commerce.model.TokenModel;
 import com.delta.commerce.service.TokenService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +25,7 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/login")
+    @Tag(name = "Login", description = "Controller para serviços de login")
     public ResponseEntity<TokenModel> login(@RequestBody LoginDto login){
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(login.login(),

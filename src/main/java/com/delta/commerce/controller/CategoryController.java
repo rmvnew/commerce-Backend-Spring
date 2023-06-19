@@ -3,6 +3,7 @@ package com.delta.commerce.controller;
 import com.delta.commerce.dto.request.CategoryRequestDto;
 import com.delta.commerce.entity.Category;
 import com.delta.commerce.service.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/category")
+@Tag(name = "Category", description = "Controller para serviços de categorias")
 public class CategoryController {
 
     @Autowired

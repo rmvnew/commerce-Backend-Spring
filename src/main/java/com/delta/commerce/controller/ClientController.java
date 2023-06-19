@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/client")
-@Tag(name = "Client", description = "Controller para serviços de client")
+@Tag(name = "Client", description = "Controller para serviços de Clientes")
 public class ClientController {
 
     @Autowired
