@@ -38,7 +38,18 @@ public class Address {
     @Column(name = "home_number")
     private String homeNumber;
 
-    @OneToMany(mappedBy = "address")
-    private Set<Client> clients;
+   @OneToOne(mappedBy = "address")
+   private Client client;
 
+    public Address(String zipcode, String state, String city,
+                   String district, String street, String homeNumber,
+                   Client client) {
+        this.zipcode = zipcode;
+        this.state = state;
+        this.city = city;
+        this.district = district;
+        this.street = street;
+        this.homeNumber = homeNumber;
+        this.client = client;
+    }
 }

@@ -45,8 +45,7 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private Set<Telephone> telephones;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
+    @OneToOne
     private Address address;
 
     @OneToMany(mappedBy = "client")
