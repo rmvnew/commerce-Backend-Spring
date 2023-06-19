@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @Column(name = "user_password")
     private String userPassword;
 
-    @Column(name = "user_enrollment",unique = true)
+    @Column(name = "user_enrollment", unique = true)
     private String userEnrollment;
 
     @Column(name = "user_recover_code", nullable = true)
@@ -53,6 +53,9 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "profile_id"))
     private Set<Profile> profiles;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Sale> sales;
 
     public User(String userCompleteName, String userEmail,
                 String userPassword, String userEnrollment,
