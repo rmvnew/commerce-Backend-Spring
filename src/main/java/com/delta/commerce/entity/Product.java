@@ -69,6 +69,14 @@ public class Product {
     @JsonIgnore
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "sale_id",nullable = false)
+    @ToString.Exclude
+    @JsonIgnore
+    private Sale sale;
+
+
+
     public Product(String productName, String productBarcode, String productCode,
                    String productNcm, String productCfop, String productUnitOfMeasurement,
                    double productQuantity, double productMinimumStock,
