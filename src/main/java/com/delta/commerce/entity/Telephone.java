@@ -1,5 +1,6 @@
 package com.delta.commerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class Telephone {
     private String telephoneNumber;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "client_id",nullable = false)
     private Client client;
 

@@ -1,14 +1,19 @@
 package com.delta.commerce.service.impl;
 
+import com.delta.commerce.dto.filter.ClientFilter;
 import com.delta.commerce.dto.request.ClientRequestDto;
 import com.delta.commerce.entity.Address;
 import com.delta.commerce.entity.Client;
 import com.delta.commerce.entity.Telephone;
+import com.delta.commerce.exception.CustomException;
+import com.delta.commerce.exception.ErrorCustom;
 import com.delta.commerce.repository.AddressRepository;
 import com.delta.commerce.repository.ClientRepository;
 import com.delta.commerce.repository.TelephoneRepository;
 import com.delta.commerce.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -58,5 +63,25 @@ public class ClientServiceImpl implements ClientService {
         });
 
         return clientSaved;
+    }
+
+    @Override
+    public Client findById(Long id) {
+        return this.clientRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCustom.CLIENT_NOT_FOUND));
+    }
+
+    @Override
+    public Page<Client> getAllClients(ClientFilter filter, Pageable page) {
+
+        var cnpj = filter.getClientCnpj() != null ? (filter.getClientCnpj() != "" ? filter.getClientCnpj() : null) : null;
+
+        return this.clientRepository.getAllClients(
+                filter.getClientName(),
+                cnpj,
+                filter.getClientEmail(),
+                filter.getClientResponsible(),
+                page
+        );
     }
 }
