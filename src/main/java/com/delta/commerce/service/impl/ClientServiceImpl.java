@@ -3,8 +3,10 @@ package com.delta.commerce.service.impl;
 import com.delta.commerce.dto.request.ClientRequestDto;
 import com.delta.commerce.entity.Address;
 import com.delta.commerce.entity.Client;
+import com.delta.commerce.entity.Telephone;
 import com.delta.commerce.repository.AddressRepository;
 import com.delta.commerce.repository.ClientRepository;
+import com.delta.commerce.repository.TelephoneRepository;
 import com.delta.commerce.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private TelephoneRepository telephoneRepository;
 
     @Override
     public Client createClient(ClientRequestDto dto) {
@@ -43,8 +48,15 @@ public class ClientServiceImpl implements ClientService {
         client.setUpdateAt(LocalDateTime.now());
         client.setAddress(addressSaved);
 
+        var clientSaved = this.clientRepository.save(client);
 
+        dto.getTelephoneRequestDto().getTelephoneNumbers().forEach(number -> {
+            var telephone = new Telephone();
+            telephone.setTelephoneNumber(number);
+            telephone.setClient(clientSaved);
+            this.telephoneRepository.save(telephone);
+        });
 
-        return null;
+        return clientSaved;
     }
 }

@@ -2,11 +2,11 @@ package com.delta.commerce.dto.request;
 
 import lombok.Data;
 
-import javax.persistence.Column;
+import java.util.Set;
 
 @Data
 public class TelephoneRequestDto {
 
-    private String telephoneNumber;
+    private Set<String> telephoneNumbers;
 
 }
