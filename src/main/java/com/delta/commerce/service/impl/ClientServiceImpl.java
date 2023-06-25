@@ -15,6 +15,7 @@ import com.delta.commerce.repository.TelephoneRepository;
 import com.delta.commerce.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,7 @@ public class ClientServiceImpl implements ClientService {
     private ClientMapper clientMapper;
 
     @Override
-    public Client createClient(ClientRequestDto dto) {
+    public ClientResponseDto createClient(ClientRequestDto dto) {
 
         var isRegistered = this.clientRepository.verifyClientByName(dto.getClientName().toUpperCase());
 
@@ -78,7 +79,7 @@ public class ClientServiceImpl implements ClientService {
 
         this.telephoneRepository.saveAll(telephones);
 
-        return clientSaved;
+        return clientMapper.toDto(clientSaved);
     }
 
     @Override
@@ -90,16 +91,21 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Page<Client> getAllClients(ClientFilter filter, Pageable page) {
+    public Page<ClientResponseDto> getAllClients(ClientFilter filter, Pageable page) {
 
         var cnpj = filter.getClientCnpj() != null ? (filter.getClientCnpj() != "" ? filter.getClientCnpj() : null) : null;
 
-        return this.clientRepository.getAllClients(
+        var res = this.clientRepository.getAllClients(
                 filter.getClientName(),
                 cnpj,
                 filter.getClientEmail(),
                 filter.getClientResponsible(),
                 page
         );
+
+        var list = res.stream().map(clientMapper::toDto).collect(Collectors.toList());
+
+        return new PageImpl<>(list,page, res.getTotalElements());
+
     }
 }

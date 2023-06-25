@@ -10,11 +10,11 @@ import org.springframework.data.domain.Pageable;
 public interface ClientService {
 
 
-    Client createClient(ClientRequestDto dto);
+    ClientResponseDto createClient(ClientRequestDto dto);
 
     ClientResponseDto findById(Long id);
 
-    Page<Client> getAllClients(ClientFilter filter, Pageable page);
+    Page<ClientResponseDto> getAllClients(ClientFilter filter, Pageable page);
 
 
 }

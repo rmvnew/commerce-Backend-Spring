@@ -23,14 +23,14 @@ public class ClientController {
     private ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<Client> createClient(
+    public ResponseEntity<ClientResponseDto> createClient(
             @RequestBody @Valid ClientRequestDto dto
     ) {
         return ResponseEntity.ok(this.clientService.createClient(dto));
     }
 
     @GetMapping
-    public ResponseEntity<Page<Client>> getAllClients(
+    public ResponseEntity<Page<ClientResponseDto>> getAllClients(
             @RequestParam(name = "clientName", required = false) String clientName,
             @RequestParam(name = "clientCnpj", required = false) String clientCnpj,
             @RequestParam(name = "clientEmail", required = false) String clientEmail,
