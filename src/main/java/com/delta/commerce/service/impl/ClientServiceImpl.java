@@ -2,11 +2,13 @@ package com.delta.commerce.service.impl;
 
 import com.delta.commerce.dto.filter.ClientFilter;
 import com.delta.commerce.dto.request.ClientRequestDto;
+import com.delta.commerce.dto.response.ClientResponseDto;
 import com.delta.commerce.entity.Address;
 import com.delta.commerce.entity.Client;
 import com.delta.commerce.entity.Telephone;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
+import com.delta.commerce.mappers.ClientMapper;
 import com.delta.commerce.repository.AddressRepository;
 import com.delta.commerce.repository.ClientRepository;
 import com.delta.commerce.repository.TelephoneRepository;
@@ -30,6 +32,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private TelephoneRepository telephoneRepository;
+
+    @Autowired
+    private ClientMapper clientMapper;
 
     @Override
     public Client createClient(ClientRequestDto dto) {
@@ -77,9 +82,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client findById(Long id) {
-        return this.clientRepository.findById(id)
+    public ClientResponseDto findById(Long id) {
+        var res = this.clientRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCustom.CLIENT_NOT_FOUND));
+
+        return clientMapper.toDto(res);
     }
 
     @Override

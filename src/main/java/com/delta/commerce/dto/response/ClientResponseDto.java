@@ -1,8 +1,6 @@
 package com.delta.commerce.dto.response;
 
-import com.delta.commerce.entity.Address;
 import com.delta.commerce.entity.Sale;
-import com.delta.commerce.entity.Telephone;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -16,8 +14,8 @@ public class ClientResponseDto {
     private String clientEmail;
     private String clientResponsible;
     private LocalDateTime createAt;
-    private Set<Telephone> telephones;
-    private Address address;
+    private Set<TelephoneResponseDto> telephones;
+    private AddressResponseDto address;
     private Set<Sale> sales;
 
 }

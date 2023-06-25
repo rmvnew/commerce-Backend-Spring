@@ -2,6 +2,7 @@ package com.delta.commerce.controller;
 
 import com.delta.commerce.dto.filter.ClientFilter;
 import com.delta.commerce.dto.request.ClientRequestDto;
+import com.delta.commerce.dto.response.ClientResponseDto;
 import com.delta.commerce.entity.Client;
 import com.delta.commerce.service.ClientService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,7 +48,7 @@ public class ClientController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Client> findById(
+    public ResponseEntity<ClientResponseDto> findById(
             @PathVariable Long id
     ){
         return ResponseEntity.ok(this.clientService.findById(id));
