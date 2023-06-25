@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/client")
 @Tag(name = "Client", description = "Controller para serviços de Clientes")
@@ -21,7 +23,7 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<Client> createClient(
-            @RequestBody ClientRequestDto dto
+            @RequestBody @Valid ClientRequestDto dto
     ) {
         return ResponseEntity.ok(this.clientService.createClient(dto));
     }

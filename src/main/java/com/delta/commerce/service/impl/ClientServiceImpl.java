@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -55,12 +56,16 @@ public class ClientServiceImpl implements ClientService {
 
         var clientSaved = this.clientRepository.save(client);
 
-        dto.getTelephoneRequestDto().getTelephoneNumbers().forEach(number -> {
-            var telephone = new Telephone();
-            telephone.setTelephoneNumber(number);
-            telephone.setClient(clientSaved);
-            this.telephoneRepository.save(telephone);
-        });
+        var telephones = dto.getTelephoneRequestDto().getTelephoneNumbers().stream()
+                .map(number ->{
+                    var telephone = new Telephone();
+                    telephone.setClient(clientSaved);
+                    telephone.setTelephoneNumber(number);
+
+                    return telephone;
+                }).collect(Collectors.toList());
+
+        this.telephoneRepository.saveAll(telephones);
 
         return clientSaved;
     }
