@@ -12,14 +12,15 @@ public enum ErrorCustom {
     ROLE_NOT_EXISTS(HttpStatus.NOT_FOUND, 151, "Role not exists!"),
     OK(HttpStatus.OK, 200, "Success"),
     CREATED(HttpStatus.CREATED, 201, "Created"),
-    PROFILE_ALREADY_EXISTS(HttpStatus.CREATED, 300, "Profile Already exists!"),
+    PROFILE_ALREADY_EXISTS(HttpStatus.CONFLICT, 300, "Profile Already exists!"),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, 400, "Bad Request"),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 401, "Unauthorized"),
     FORBIDDEN(HttpStatus.FORBIDDEN, 403, "Forbidden"),
     NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Not Found"),
     PRODUCT_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, 500, "Product Already exists!"),
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, 600, "Category not found"),
-    CLIENT_NOT_FOUND(HttpStatus.NOT_FOUND, 700, "Client not found");
+    CLIENT_ALREADY_EXISTS(HttpStatus.CONFLICT, 700, "Client already exists!"),
+    CLIENT_NOT_FOUND(HttpStatus.NOT_FOUND, 701, "Client not found");
 
     private final HttpStatus httpStatus;
     private final int code;

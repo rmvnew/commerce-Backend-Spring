@@ -45,4 +45,12 @@ public class ClientController {
         return ResponseEntity.ok(this.clientService.getAllClients(filter, page));
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Client> findById(
+            @PathVariable Long id
+    ){
+        return ResponseEntity.ok(this.clientService.findById(id));
+    }
+
 }

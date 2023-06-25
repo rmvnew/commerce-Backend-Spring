@@ -34,6 +34,12 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client createClient(ClientRequestDto dto) {
 
+        var isRegistered = this.clientRepository.verifyClientByName(dto.getClientName().toUpperCase());
+
+        if (isRegistered.isPresent()) {
+            throw new CustomException(ErrorCustom.CLIENT_ALREADY_EXISTS);
+        }
+
         var address = new Address();
         address.setZipcode(dto.getAddressRequestDto().getZipcode());
         address.setState(dto.getAddressRequestDto().getState());
@@ -47,7 +53,7 @@ public class ClientServiceImpl implements ClientService {
         var client = new Client();
         client.setClientCnpj(dto.getClientCnpj());
         client.setClientEmail(dto.getClientEmail());
-        client.setClientName(dto.getClientName());
+        client.setClientName(dto.getClientName().toUpperCase());
         client.setClientResponsible(dto.getClientResponsible());
         client.setActive(true);
         client.setCreateAt(LocalDateTime.now());
@@ -57,7 +63,7 @@ public class ClientServiceImpl implements ClientService {
         var clientSaved = this.clientRepository.save(client);
 
         var telephones = dto.getTelephoneRequestDto().getTelephoneNumbers().stream()
-                .map(number ->{
+                .map(number -> {
                     var telephone = new Telephone();
                     telephone.setClient(clientSaved);
                     telephone.setTelephoneNumber(number);

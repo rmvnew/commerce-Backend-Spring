@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Query("""
@@ -24,5 +26,11 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             @Param("clientResponsible") String clientResponsible,
             Pageable page
     );
+
+    @Query("""
+            select c from Client c
+            where c.clientName = :name
+            """)
+    Optional<Client> verifyClientByName(@Param("name") String name);
 
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorCustom errorCustom = ex.getErrorCustom();
         ErrorResponse error = new ErrorResponse(LocalDateTime.now(), errorCustom.getHttpStatus().value(), errorCustom.getMessage(), ex.getMessage());
         return new ResponseEntity<>(error, errorCustom.getHttpStatus());
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public final ResponseEntity<ErrorResponse> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(LocalDateTime.now(), HttpStatus.CONFLICT.value(), "Duplicate entry", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
 
