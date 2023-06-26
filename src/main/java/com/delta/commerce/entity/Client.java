@@ -21,11 +21,14 @@ public class Client {
     @Column(name = "client_id")
     private Long clientId;
 
-    @Column(name = "client_name")
+    @Column(name = "client_name",unique = true)
     private String clientName;
 
     @Column(name = "client_cnpj")
     private String clientCnpj;
+
+    @Column(name = "client_cpf")
+    private String clientCpf;
 
     @Column(name = "client_email")
     private String clientEmail;
@@ -35,6 +38,9 @@ public class Client {
 
     @Column(name = "is_active")
     private boolean isActive;
+
+    @Column(name = "is_company")
+    private boolean isCompany;
 
     @Column(name = "create_at")
     private LocalDateTime createAt;
@@ -48,7 +54,25 @@ public class Client {
     @OneToOne
     private Address address;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private Set<Sale> sales;
 
+    public Client(String clientName, String clientCnpj, String clientCpf, String clientEmail,
+                  String clientResponsible, boolean isActive, boolean isCompany,
+                  LocalDateTime createAt, LocalDateTime updateAt,
+                  Set<Telephone> telephones, Address address, Set<Sale> sales) {
+
+        this.clientName = clientName;
+        this.clientCnpj = clientCnpj;
+        this.clientCpf = clientCpf;
+        this.clientEmail = clientEmail;
+        this.clientResponsible = clientResponsible;
+        this.isActive = isActive;
+        this.isCompany = isCompany;
+        this.createAt = createAt;
+        this.updateAt = updateAt;
+        this.telephones = telephones;
+        this.address = address;
+        this.sales = sales;
+    }
 }

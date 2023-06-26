@@ -1,12 +1,12 @@
 package com.delta.commerce.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity(name = "Address")
 @Table(name = "tb_address")
@@ -39,6 +39,7 @@ public class Address {
     private String homeNumber;
 
    @OneToOne(mappedBy = "address")
+   @JsonIgnore
    private Client client;
 
     public Address(String zipcode, String state, String city,

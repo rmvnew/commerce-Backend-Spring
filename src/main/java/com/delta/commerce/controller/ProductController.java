@@ -4,6 +4,7 @@ import com.delta.commerce.dto.filter.ProductFilter;
 import com.delta.commerce.dto.request.ProductRequestDto;
 import com.delta.commerce.entity.Product;
 import com.delta.commerce.service.ProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/product")
+@Tag(name = "Product", description = "Controller para serviços de produtos")
 public class ProductController {
 
     @Autowired

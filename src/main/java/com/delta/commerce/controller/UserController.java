@@ -6,6 +6,7 @@ import com.delta.commerce.dto.request.RecoverPassRequestDto;
 import com.delta.commerce.dto.request.UpdateUserRequestDto;
 import com.delta.commerce.dto.response.UserResponse;
 import com.delta.commerce.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "users")
+@Tag(name = "User", description = "Controller para serviços de Usuários")
 public class UserController {
 
     @Autowired

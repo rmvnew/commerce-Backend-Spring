@@ -3,6 +3,7 @@ package com.delta.commerce.controller;
 import com.delta.commerce.dto.request.ProfileRequestDto;
 import com.delta.commerce.entity.Profile;
 import com.delta.commerce.service.ProfileService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/profile")
+@Tag(name = "Profile", description = "Controller para serviços de perfil")
 public class ProfileController {
 
     @Autowired
