@@ -48,10 +48,19 @@ public class ClientController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientResponseDto> findById(
+    public ResponseEntity<Client> findById(
             @PathVariable Long id
-    ){
+    ) {
         return ResponseEntity.ok(this.clientService.findById(id));
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientResponseDto> updateClient(
+            @RequestBody @Valid ClientRequestDto dto,
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(this.clientService.updateClient(dto, id));
     }
 
 }

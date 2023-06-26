@@ -12,9 +12,11 @@ public interface ClientService {
 
     ClientResponseDto createClient(ClientRequestDto dto);
 
-    ClientResponseDto findById(Long id);
+    Client findById(Long id);
 
     Page<ClientResponseDto> getAllClients(ClientFilter filter, Pageable page);
+
+    ClientResponseDto updateClient(ClientRequestDto dto, Long id);
 
 
 }

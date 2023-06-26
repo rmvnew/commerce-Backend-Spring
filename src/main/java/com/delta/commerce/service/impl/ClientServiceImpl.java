@@ -13,6 +13,7 @@ import com.delta.commerce.repository.AddressRepository;
 import com.delta.commerce.repository.ClientRepository;
 import com.delta.commerce.repository.TelephoneRepository;
 import com.delta.commerce.service.ClientService;
+import com.delta.commerce.utils.ValidDocuments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -46,6 +47,24 @@ public class ClientServiceImpl implements ClientService {
             throw new CustomException(ErrorCustom.CLIENT_ALREADY_EXISTS);
         }
 
+        String cpf = null;
+        String cnpj = null;
+
+        if (dto.isCompany()) {
+            if (ValidDocuments.getInstance().isCNPJ(dto.getClientCnpj())) {
+                cnpj = dto.getClientCnpj();
+            } else {
+                throw new CustomException(ErrorCustom.DOCUMENT_COMPANY_INVALID);
+            }
+        } else {
+            if (ValidDocuments.getInstance().isCPF(dto.getClientCpf())) {
+                cpf = dto.getClientCpf();
+            } else {
+                throw new CustomException(ErrorCustom.DOCUMENT_CLIENT_INVALID);
+            }
+        }
+
+
         var address = new Address();
         address.setZipcode(dto.getAddressRequestDto().getZipcode());
         address.setState(dto.getAddressRequestDto().getState());
@@ -57,7 +76,8 @@ public class ClientServiceImpl implements ClientService {
         var addressSaved = this.addressRepository.save(address);
 
         var client = new Client();
-        client.setClientCnpj(dto.getClientCnpj());
+        client.setClientCnpj(cnpj);
+        client.setClientCpf(cpf);
         client.setClientEmail(dto.getClientEmail());
         client.setClientName(dto.getClientName().toUpperCase());
         client.setClientResponsible(dto.getClientResponsible());
@@ -83,11 +103,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientResponseDto findById(Long id) {
-        var res = this.clientRepository.findById(id)
+    public Client findById(Long id) {
+        return this.clientRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCustom.CLIENT_NOT_FOUND));
 
-        return clientMapper.toDto(res);
     }
 
     @Override
@@ -105,7 +124,60 @@ public class ClientServiceImpl implements ClientService {
 
         var list = res.stream().map(clientMapper::toDto).collect(Collectors.toList());
 
-        return new PageImpl<>(list,page, res.getTotalElements());
+        return new PageImpl<>(list, page, res.getTotalElements());
 
+    }
+
+    @Override
+    public ClientResponseDto updateClient(ClientRequestDto dto, Long id) {
+
+        String cpf = null;
+        String cnpj = null;
+
+        if (dto.isCompany()) {
+            if (ValidDocuments.getInstance().isCNPJ(dto.getClientCnpj())) {
+                cnpj = dto.getClientCnpj();
+            } else {
+                throw new CustomException(ErrorCustom.DOCUMENT_COMPANY_INVALID);
+            }
+        } else {
+            if (ValidDocuments.getInstance().isCPF(dto.getClientCpf())) {
+                cpf = dto.getClientCpf();
+            } else {
+                throw new CustomException(ErrorCustom.DOCUMENT_CLIENT_INVALID);
+            }
+        }
+
+        var client = this.findById(id);
+
+        client.getAddress().setZipcode(dto.getAddressRequestDto().getZipcode());
+        client.getAddress().setState(dto.getAddressRequestDto().getState());
+        client.getAddress().setCity(dto.getAddressRequestDto().getCity());
+        client.getAddress().setDistrict(dto.getAddressRequestDto().getDistrict());
+        client.getAddress().setStreet(dto.getAddressRequestDto().getStreet());
+        client.getAddress().setHomeNumber(dto.getAddressRequestDto().getHomeNumber());
+        client.setClientCnpj(cnpj);
+        client.setClientCpf(cpf);
+        client.setClientEmail(dto.getClientEmail());
+        client.setClientName(dto.getClientName().toUpperCase());
+        client.setClientResponsible(dto.getClientResponsible());
+        client.setActive(true);
+        client.setCreateAt(LocalDateTime.now());
+        client.setUpdateAt(LocalDateTime.now());
+
+        var clientSaved = this.clientRepository.save(client);
+
+        var telephones = dto.getTelephoneRequestDto().getTelephoneNumbers().stream()
+                .map(number -> {
+                    var telephone = new Telephone();
+                    telephone.setClient(clientSaved);
+                    telephone.setTelephoneNumber(number);
+
+                    return telephone;
+                }).collect(Collectors.toList());
+
+        this.telephoneRepository.saveAll(telephones);
+
+        return clientMapper.toDto(clientSaved);
     }
 }
