@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +24,7 @@ public class ClientController {
     private ClientService clientService;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('USER_WRITE','ADMIN_WRITE')")
     public ResponseEntity<ClientResponseDto> createClient(
             @RequestBody @Valid ClientRequestDto dto
     ) {
@@ -30,6 +32,7 @@ public class ClientController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('USER_READ','ADMIN_READ')")
     public ResponseEntity<Page<ClientResponseDto>> getAllClients(
             @RequestParam(name = "clientName", required = false) String clientName,
             @RequestParam(name = "clientCnpj", required = false) String clientCnpj,
@@ -50,6 +53,7 @@ public class ClientController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER_READ','ADMIN_READ')")
     public ResponseEntity<Client> findById(
             @PathVariable Long id
     ) {
@@ -58,6 +62,7 @@ public class ClientController {
 
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER_WRITE','ADMIN_WRITE')")
     public ResponseEntity<ClientResponseDto> updateClient(
             @RequestBody @Valid ClientRequestDto dto,
             @PathVariable Long id
@@ -67,6 +72,7 @@ public class ClientController {
 
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN_WRITE')")
     public void chnageStatus(
             @PathVariable Long id
     ) {

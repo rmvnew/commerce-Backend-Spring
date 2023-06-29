@@ -32,6 +32,8 @@ public class Client {
 
     @Column(name = "client_email")
     private String clientEmail;
+    @Column(name = "telephone")
+    private String telephone;
 
     @Column(name = "client_responsible")
     private String clientResponsible;
@@ -48,8 +50,6 @@ public class Client {
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
-    @OneToMany(mappedBy = "client")
-    private Set<Telephone> telephones;
 
     @OneToOne
     private Address address;
@@ -60,7 +60,7 @@ public class Client {
     public Client(String clientName, String clientCnpj, String clientCpf, String clientEmail,
                   String clientResponsible, boolean isActive, boolean isCompany,
                   LocalDateTime createAt, LocalDateTime updateAt,
-                  Set<Telephone> telephones, Address address, Set<Sale> sales) {
+                  Address address, Set<Sale> sales) {
 
         this.clientName = clientName;
         this.clientCnpj = clientCnpj;
@@ -71,7 +71,6 @@ public class Client {
         this.isCompany = isCompany;
         this.createAt = createAt;
         this.updateAt = updateAt;
-        this.telephones = telephones;
         this.address = address;
         this.sales = sales;
     }

@@ -5,13 +5,11 @@ import com.delta.commerce.dto.request.ClientRequestDto;
 import com.delta.commerce.dto.response.ClientResponseDto;
 import com.delta.commerce.entity.Address;
 import com.delta.commerce.entity.Client;
-import com.delta.commerce.entity.Telephone;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
 import com.delta.commerce.mappers.ClientMapper;
 import com.delta.commerce.repository.AddressRepository;
 import com.delta.commerce.repository.ClientRepository;
-import com.delta.commerce.repository.TelephoneRepository;
 import com.delta.commerce.service.ClientService;
 import com.delta.commerce.utils.ValidDocuments;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +29,6 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private AddressRepository addressRepository;
-
-    @Autowired
-    private TelephoneRepository telephoneRepository;
 
     @Autowired
     private ClientMapper clientMapper;
@@ -81,6 +76,7 @@ public class ClientServiceImpl implements ClientService {
         client.setClientEmail(dto.getClientEmail());
         client.setClientName(dto.getClientName().toUpperCase());
         client.setClientResponsible(dto.getClientResponsible());
+        client.setTelephone(dto.getTelephone());
         client.setActive(true);
         client.setCreateAt(LocalDateTime.now());
         client.setUpdateAt(LocalDateTime.now());
@@ -88,16 +84,7 @@ public class ClientServiceImpl implements ClientService {
 
         var clientSaved = this.clientRepository.save(client);
 
-        var telephones = dto.getTelephoneRequestDto().getTelephoneNumbers().stream()
-                .map(number -> {
-                    var telephone = new Telephone();
-                    telephone.setClient(clientSaved);
-                    telephone.setTelephoneNumber(number);
 
-                    return telephone;
-                }).collect(Collectors.toList());
-
-        this.telephoneRepository.saveAll(telephones);
 
         return clientMapper.toDto(clientSaved);
     }
@@ -171,22 +158,13 @@ public class ClientServiceImpl implements ClientService {
         client.setClientEmail(dto.getClientEmail());
         client.setClientName(dto.getClientName().toUpperCase());
         client.setClientResponsible(dto.getClientResponsible());
+        client.setTelephone(dto.getTelephone());
         client.setActive(true);
         client.setCreateAt(LocalDateTime.now());
         client.setUpdateAt(LocalDateTime.now());
 
         var clientSaved = this.clientRepository.save(client);
 
-        var telephones = dto.getTelephoneRequestDto().getTelephoneNumbers().stream()
-                .map(number -> {
-                    var telephone = new Telephone();
-                    telephone.setClient(clientSaved);
-                    telephone.setTelephoneNumber(number);
-
-                    return telephone;
-                }).collect(Collectors.toList());
-
-        this.telephoneRepository.saveAll(telephones);
 
         return clientMapper.toDto(clientSaved);
     }
