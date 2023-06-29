@@ -33,6 +33,7 @@ public class ClientController {
     public ResponseEntity<Page<ClientResponseDto>> getAllClients(
             @RequestParam(name = "clientName", required = false) String clientName,
             @RequestParam(name = "clientCnpj", required = false) String clientCnpj,
+            @RequestParam(name = "clientCpf", required = false) String clientCpf,
             @RequestParam(name = "clientEmail", required = false) String clientEmail,
             @RequestParam(name = "clientResponsible", required = false) String clientResponsible,
             Pageable page
@@ -40,6 +41,7 @@ public class ClientController {
         var filter = new ClientFilter();
         filter.setClientName(clientName);
         filter.setClientCnpj(clientCnpj);
+        filter.setClientCpf(clientCpf);
         filter.setClientEmail(clientEmail);
         filter.setClientResponsible(clientResponsible);
 

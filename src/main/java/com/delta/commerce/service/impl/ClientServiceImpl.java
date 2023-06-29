@@ -113,10 +113,20 @@ public class ClientServiceImpl implements ClientService {
     public Page<ClientResponseDto> getAllClients(ClientFilter filter, Pageable page) {
 
         var cnpj = filter.getClientCnpj() != null ? (filter.getClientCnpj() != "" ? filter.getClientCnpj() : null) : null;
+        var cpf = filter.getClientCpf() != null ? (filter.getClientCpf() != "" ? filter.getClientCpf() : null) : null;
+
+        if(cnpj != null && !ValidDocuments.getInstance().isCNPJ(cnpj)){
+            throw new IllegalArgumentException("CNPJ anválido: "+cnpj);
+        }
+
+        if(cpf != null && !ValidDocuments.getInstance().isCPF(cpf)){
+            throw new IllegalArgumentException("CPF anválido: "+cpf);
+        }
 
         var res = this.clientRepository.getAllClients(
                 filter.getClientName(),
                 cnpj,
+                cpf,
                 filter.getClientEmail(),
                 filter.getClientResponsible(),
                 page

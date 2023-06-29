@@ -16,12 +16,14 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             where c.isActive = true AND
             (:clientName is null or c.clientName like concat('%',:clientName,'%')) AND
             (:clientCnpj is null or c.clientCnpj = :clientCnpj) AND
+            (:clientCpf is null or c.clientCpf = :clientCpf) AND
             (:clientEmail is null or c.clientEmail like concat('%',:clientEmail,'%')) AND
             (:clientResponsible is null or c.clientResponsible like concat('%',:clientResponsible,'%'))
             """)
     Page<Client> getAllClients(
             @Param("clientName") String clientName,
             @Param("clientCnpj") String clientCnpj,
+            @Param("clientCpf") String clientCpf,
             @Param("clientEmail") String clientEmail,
             @Param("clientResponsible") String clientResponsible,
             Pageable page

@@ -11,6 +11,9 @@ public class ClientResponseDto {
 
     private Long clientId;
     private String clientName;
+    private boolean isCompany;
+    private String clientCnpj;
+    private String clientCpf;
     private String clientEmail;
     private String clientResponsible;
     private LocalDateTime createAt;
