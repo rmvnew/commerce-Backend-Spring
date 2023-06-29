@@ -18,5 +18,7 @@ public interface ClientService {
 
     ClientResponseDto updateClient(ClientRequestDto dto, Long id);
 
+    void changeStatus(Long id);
+
 
 }

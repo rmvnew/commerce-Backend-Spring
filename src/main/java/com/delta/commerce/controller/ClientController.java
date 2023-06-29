@@ -65,4 +65,12 @@ public class ClientController {
         return ResponseEntity.ok(this.clientService.updateClient(dto, id));
     }
 
+
+    @PatchMapping("/{id}")
+    public void chnageStatus(
+            @PathVariable Long id
+    ) {
+        this.clientService.changeStatus(id);
+    }
+
 }
