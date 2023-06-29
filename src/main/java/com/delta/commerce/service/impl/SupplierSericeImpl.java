@@ -25,8 +25,9 @@ public class SupplierSericeImpl implements SupplierService {
 
     @Override
     public void createSupplier(SupplierRequestDto dto) {
+        var isValid = ValidDocuments.getInstance().isCNPJ(dto.getSupplierCnpj());
 
-        if (!ValidDocuments.getInstance().isCNPJ(dto.getSupplierCnpj())) {
+        if (!isValid) {
             throw new CustomException(ErrorCustom.DOCUMENT_SUPPLIER_INVALID);
         }
 
