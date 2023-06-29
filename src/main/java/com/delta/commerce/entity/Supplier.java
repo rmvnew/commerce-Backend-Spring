@@ -21,6 +21,9 @@ public class Supplier {
     @Column(name = "supplier_name")
     private String supplierName;
 
+    @Column(name = "supplier_cnpj")
+    private String supplierCnpj;
+
     @Column(name = "supplier_telephone")
     private String supplierTelephone;
 

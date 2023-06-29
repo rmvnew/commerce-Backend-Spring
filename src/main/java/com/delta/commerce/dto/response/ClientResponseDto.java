@@ -17,7 +17,7 @@ public class ClientResponseDto {
     private String clientEmail;
     private String clientResponsible;
     private LocalDateTime createAt;
-    private Set<TelephoneResponseDto> telephones;
+    private String telephone;
     private AddressResponseDto address;
     private Set<Sale> sales;
 

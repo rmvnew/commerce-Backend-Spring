@@ -3,9 +3,12 @@ package com.delta.commerce.service.impl;
 import com.delta.commerce.dto.request.SupplierRequestDto;
 import com.delta.commerce.entity.Address;
 import com.delta.commerce.entity.Supplier;
+import com.delta.commerce.exception.CustomException;
+import com.delta.commerce.exception.ErrorCustom;
 import com.delta.commerce.repository.AddressRepository;
 import com.delta.commerce.repository.SupplierRepository;
 import com.delta.commerce.service.SupplierService;
+import com.delta.commerce.utils.ValidDocuments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,10 @@ public class SupplierSericeImpl implements SupplierService {
     @Override
     public void createSupplier(SupplierRequestDto dto) {
 
+        if (!ValidDocuments.getInstance().isCNPJ(dto.getSupplierCnpj())) {
+            throw new CustomException(ErrorCustom.DOCUMENT_SUPPLIER_INVALID);
+        }
+
         var address = new Address();
         address.setZipcode(dto.getAddressRequestDto().getZipcode());
         address.setState(dto.getAddressRequestDto().getState());
@@ -35,6 +42,7 @@ public class SupplierSericeImpl implements SupplierService {
 
         var supplier = new Supplier();
         supplier.setSupplierName(dto.getSupplierName().toUpperCase());
+        supplier.setSupplierCnpj(dto.getSupplierCnpj());
         supplier.setSupplierEmail(dto.getSupplierEmail());
         supplier.setSupplierTelephone(dto.getSupplierTelephone());
         supplier.setAddress(addressSaved);

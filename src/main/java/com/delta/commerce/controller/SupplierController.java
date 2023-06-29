@@ -2,6 +2,7 @@ package com.delta.commerce.controller;
 
 import com.delta.commerce.dto.request.SupplierRequestDto;
 import com.delta.commerce.service.SupplierService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(name = "supplier")
+@RequestMapping(value = "supplier")
+@Tag(name = "Supplier", description = "Controller para serviços de fornecedor")
 public class SupplierController {
 
     @Autowired

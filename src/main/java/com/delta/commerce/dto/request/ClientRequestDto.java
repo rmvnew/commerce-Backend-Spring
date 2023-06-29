@@ -12,8 +12,10 @@ public class ClientRequestDto {
     @Size(min = 5, max = 50)
     private String clientName;
 
+    @Pattern(regexp = "\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}")
     private String clientCnpj;
 
+    @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}")
     private String clientCpf;
 
     private boolean isCompany;
