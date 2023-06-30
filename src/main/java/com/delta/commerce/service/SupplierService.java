@@ -13,5 +13,11 @@ public interface SupplierService {
 
     Page<Supplier> getAllSupliers(SupplierFilter filter, Pageable page);
 
+    Supplier findById(Long id);
+
+    void updateSupplier(SupplierRequestDto dto, Long id);
+
+    void changeStatus(Long id);
+
 
 }

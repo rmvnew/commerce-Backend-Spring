@@ -70,4 +70,49 @@ public class SupplierSericeImpl implements SupplierService {
 
         return this.supplierRepository.getAllSuppliers(filter.getSupplierName(), filter.getSupplierCnpj(), page);
     }
+
+    @Override
+    public Supplier findById(Long id) {
+        return this.supplierRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCustom.NOT_FOUND));
+    }
+
+    @Override
+    public void updateSupplier(SupplierRequestDto dto, Long id) {
+
+        var supplier = this.findById(id);
+
+        var cnpj = dto.getSupplierCnpj() != null ? (dto.getSupplierCnpj() != "" ? dto.getSupplierCnpj().replaceAll("[^0-9]", "") : null) : null;
+
+        var isValid = ValidDocuments.getInstance().isCNPJ(cnpj);
+
+        if (!isValid) {
+            throw new CustomException(ErrorCustom.DOCUMENT_SUPPLIER_INVALID);
+        }
+
+        supplier.getAddress().setZipcode(dto.getAddressRequestDto().getZipcode());
+        supplier.getAddress().setState(dto.getAddressRequestDto().getState());
+        supplier.getAddress().setCity(dto.getAddressRequestDto().getCity());
+        supplier.getAddress().setDistrict(dto.getAddressRequestDto().getDistrict());
+        supplier.getAddress().setStreet(dto.getAddressRequestDto().getStreet());
+        supplier.getAddress().setHomeNumber(dto.getAddressRequestDto().getHomeNumber());
+        supplier.setSupplierName(dto.getSupplierName().toUpperCase());
+        supplier.setSupplierCnpj(cnpj);
+        supplier.setSupplierEmail(dto.getSupplierEmail());
+        supplier.setSupplierTelephone(dto.getSupplierTelephone());
+        supplier.setUpdateAt(LocalDateTime.now());
+
+        this.supplierRepository.save(supplier);
+
+    }
+
+    @Override
+    public void changeStatus(Long id) {
+
+        var supplier = this.findById(id);
+        supplier.setActive(false);
+
+        this.supplierRepository.save(supplier);
+
+    }
 }

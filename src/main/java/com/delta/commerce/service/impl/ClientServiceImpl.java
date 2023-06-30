@@ -160,7 +160,6 @@ public class ClientServiceImpl implements ClientService {
         client.setClientResponsible(dto.getClientResponsible());
         client.setTelephone(dto.getTelephone());
         client.setActive(true);
-        client.setCreateAt(LocalDateTime.now());
         client.setUpdateAt(LocalDateTime.now());
 
         var clientSaved = this.clientRepository.save(client);

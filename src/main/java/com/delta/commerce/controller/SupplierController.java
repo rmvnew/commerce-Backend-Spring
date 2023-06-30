@@ -40,7 +40,33 @@ public class SupplierController {
         filter.setSupplierName(name);
         filter.setSupplierCnpj(cnpj);
 
-        return ResponseEntity.ok(this.supplierService.getAllSupliers(filter,page));
+        return ResponseEntity.ok(this.supplierService.getAllSupliers(filter, page));
+    }
+
+
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyAuthority('USER_READ','ADMIN_READ')")
+    public Supplier findById(
+            @PathVariable Long id
+    ) {
+        return this.supplierService.findById(id);
+    }
+
+    @PutMapping(value = "/{id}")
+    @PreAuthorize("hasAnyAuthority('USER_WRITE','ADMIN_WRITE')")
+    public void updateSupplier(
+            @RequestBody SupplierRequestDto dto,
+            @PathVariable Long id
+    ) {
+        this.supplierService.updateSupplier(dto, id);
+    }
+
+    @PatchMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('ADMIN_WRITE')")
+    public void changeStatus(
+            @PathVariable Long id
+    ) {
+        this.supplierService.changeStatus(id);
     }
 
 }
