@@ -1,14 +1,16 @@
 package com.delta.commerce.controller;
 
+import com.delta.commerce.dto.filter.SupplierFilter;
 import com.delta.commerce.dto.request.SupplierRequestDto;
+import com.delta.commerce.entity.Supplier;
 import com.delta.commerce.service.SupplierService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "supplier")
@@ -26,5 +28,19 @@ public class SupplierController {
         this.supplierService.createSupplier(dto);
     }
 
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('USER_READ','ADMIN_READ')")
+    public ResponseEntity<Page<Supplier>> getAllSupplier(
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "cnpj", required = false) String cnpj,
+            Pageable page
+    ) {
+
+        var filter = new SupplierFilter();
+        filter.setSupplierName(name);
+        filter.setSupplierCnpj(cnpj);
+
+        return ResponseEntity.ok(this.supplierService.getAllSupliers(filter,page));
+    }
 
 }

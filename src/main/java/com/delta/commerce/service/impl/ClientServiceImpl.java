@@ -47,13 +47,14 @@ public class ClientServiceImpl implements ClientService {
 
         if (dto.isCompany()) {
             if (ValidDocuments.getInstance().isCNPJ(dto.getClientCnpj())) {
-                cnpj = dto.getClientCnpj();
+                cnpj = dto.getClientCnpj().replaceAll("[^0-9]", "");
+                ;
             } else {
                 throw new CustomException(ErrorCustom.DOCUMENT_COMPANY_INVALID);
             }
         } else {
             if (ValidDocuments.getInstance().isCPF(dto.getClientCpf())) {
-                cpf = dto.getClientCpf();
+                cpf = dto.getClientCpf().replaceAll("[^0-9]", "");
             } else {
                 throw new CustomException(ErrorCustom.DOCUMENT_CLIENT_INVALID);
             }
@@ -85,7 +86,6 @@ public class ClientServiceImpl implements ClientService {
         var clientSaved = this.clientRepository.save(client);
 
 
-
         return clientMapper.toDto(clientSaved);
     }
 
@@ -99,8 +99,8 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Page<ClientResponseDto> getAllClients(ClientFilter filter, Pageable page) {
 
-        var cnpj = filter.getClientCnpj() != null ? (filter.getClientCnpj() != "" ? filter.getClientCnpj() : null) : null;
-        var cpf = filter.getClientCpf() != null ? (filter.getClientCpf() != "" ? filter.getClientCpf() : null) : null;
+        var cnpj = filter.getClientCnpj() != null ? (filter.getClientCnpj() != "" ? filter.getClientCnpj().replaceAll("[^0-9]", "") : null) : null;
+        var cpf = filter.getClientCpf() != null ? (filter.getClientCpf() != "" ? filter.getClientCpf().replaceAll("[^0-9]", "") : null) : null;
 
         if (cnpj != null && !ValidDocuments.getInstance().isCNPJ(cnpj)) {
             throw new IllegalArgumentException("CNPJ anválido: " + cnpj);
@@ -133,13 +133,13 @@ public class ClientServiceImpl implements ClientService {
 
         if (dto.isCompany()) {
             if (ValidDocuments.getInstance().isCNPJ(dto.getClientCnpj())) {
-                cnpj = dto.getClientCnpj();
+                cnpj = dto.getClientCnpj().replaceAll("[^0-9]", "");
             } else {
                 throw new CustomException(ErrorCustom.DOCUMENT_COMPANY_INVALID);
             }
         } else {
             if (ValidDocuments.getInstance().isCPF(dto.getClientCpf())) {
-                cpf = dto.getClientCpf();
+                cpf = dto.getClientCpf().replaceAll("[^0-9]", "");
             } else {
                 throw new CustomException(ErrorCustom.DOCUMENT_CLIENT_INVALID);
             }
