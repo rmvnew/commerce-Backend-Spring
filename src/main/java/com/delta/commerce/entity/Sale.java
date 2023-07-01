@@ -38,6 +38,9 @@ public class Sale {
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
+    @OneToOne(mappedBy = "sale", cascade = CascadeType.ALL)
+    private Invoice invoice;
+
 
 
 }

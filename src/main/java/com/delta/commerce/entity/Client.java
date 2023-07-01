@@ -57,6 +57,9 @@ public class Client {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private Set<Sale> sales;
 
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private Set<WorkOrder> workOrders;
+
     public Client(String clientName, String clientCnpj, String clientCpf, String clientEmail,
                   String clientResponsible, boolean isActive, boolean isCompany,
                   LocalDateTime createAt, LocalDateTime updateAt,

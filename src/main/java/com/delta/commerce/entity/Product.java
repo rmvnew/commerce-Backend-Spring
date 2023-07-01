@@ -10,6 +10,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "Product")
 @Table(name = "tb_product")
@@ -75,14 +77,16 @@ public class Product {
     @JsonIgnore
     private Sale sale;
 
-
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<InvoiceLine> invoiceLines = new HashSet<>();
 
     public Product(String productName, String productBarcode, String productCode,
-                   String productNcm, String productCfop, String productUnitOfMeasurement,
-                   double productQuantity, double productMinimumStock,
-                   BigDecimal productUnitCost, BigDecimal productUnitPrice,
-                   boolean isActive, LocalDateTime createAt, LocalDateTime updateAt,
-                   Category category) {
+                   String productNcm, String productCfop,
+                   String productUnitOfMeasurement, double productQuantity,
+                   double productMinimumStock, BigDecimal productUnitCost,
+                   BigDecimal productUnitPrice, boolean isActive,
+                   LocalDateTime createAt, LocalDateTime updateAt,
+                   Category category, Sale sale, Set<InvoiceLine> invoiceLines) {
         this.productName = productName;
         this.productBarcode = productBarcode;
         this.productCode = productCode;
@@ -97,5 +101,7 @@ public class Product {
         this.createAt = createAt;
         this.updateAt = updateAt;
         this.category = category;
+        this.sale = sale;
+        this.invoiceLines = invoiceLines;
     }
 }
