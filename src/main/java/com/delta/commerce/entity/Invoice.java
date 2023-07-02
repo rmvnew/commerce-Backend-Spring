@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,27 +28,27 @@ public class Invoice {
     private String invoiceNumber;
 
     @Column(name = "invoice_date")
-    private LocalDateTime invoiceDate;
+    private LocalDate invoiceDate;
 
     @Column(name = "invoice_type")
     @Enumerated(EnumType.STRING)
     private InvoiceTypeEnum invoiceType;
 
     @Column(name = "due_date")
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     @Column(name = "total_amount")
     private Double totalAmount;
 
     @ManyToOne
-    @JoinColumn(name = "supplier_id", nullable = false)
+    @JoinColumn(name = "supplier_id", nullable = true)
     private Supplier supplier;
 
     @Column(name = "paid")
     private Boolean paid;
 
     @Column(name = "payment_date")
-    private LocalDateTime paymentDate;
+    private LocalDate paymentDate;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     private Set<InvoiceLine> invoiceLines = new HashSet<>();
@@ -56,10 +57,11 @@ public class Invoice {
     @JoinColumn(name = "sale_id", nullable = true)
     private Sale sale;
 
-    public Invoice(String invoiceNumber, LocalDateTime invoiceDate,
-                   InvoiceTypeEnum invoiceType, LocalDateTime dueDate,
+    public Invoice(String invoiceNumber, LocalDate invoiceDate,
+                   InvoiceTypeEnum invoiceType, LocalDate dueDate,
                    Double totalAmount, Supplier supplier, Boolean paid,
-                   LocalDateTime paymentDate, Set<InvoiceLine> invoiceLines) {
+                   LocalDate paymentDate, Set<InvoiceLine> invoiceLines,
+                   Sale sale) {
         this.invoiceNumber = invoiceNumber;
         this.invoiceDate = invoiceDate;
         this.invoiceType = invoiceType;
@@ -69,6 +71,7 @@ public class Invoice {
         this.paid = paid;
         this.paymentDate = paymentDate;
         this.invoiceLines = invoiceLines;
+        this.sale = sale;
     }
 }
 
