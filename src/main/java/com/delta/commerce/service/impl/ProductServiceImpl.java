@@ -1,8 +1,10 @@
 package com.delta.commerce.service.impl;
 
 import com.delta.commerce.dto.filter.ProductFilter;
+import com.delta.commerce.dto.request.AddProductsRequestDto;
 import com.delta.commerce.dto.request.ProductRequestDto;
 import com.delta.commerce.entity.Category;
+import com.delta.commerce.entity.Invoice;
 import com.delta.commerce.entity.InvoiceLine;
 import com.delta.commerce.entity.Product;
 import com.delta.commerce.exception.CustomException;
@@ -137,6 +139,31 @@ public class ProductServiceImpl implements ProductService {
     public Category getCategoryById(Long id) {
         return this.categoryRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCustom.CATEGORY_NOT_FOUND));
+    }
+
+    @Override
+    public Product addProductsToStock(AddProductsRequestDto dto, String barcode) {
+
+        var product = this.productRepository.findByProductBarcode(barcode)
+                .orElseThrow(() -> new CustomException(ErrorCustom.NOT_FOUND));
+
+        Double currentQuantity = dto.getQuantity() + product.getProductQuantity();
+
+        product.setProductQuantity(currentQuantity);
+
+        var productSaved = this.productRepository.save(product);
+
+        if (!dto.getInvoiceNumber().equals("")) {
+            var invoice = this.invoiceService.findByNumber(dto.getInvoiceNumber());
+            var invoiceLine = new InvoiceLine();
+            invoiceLine.setInvoice(invoice);
+            invoiceLine.setProduct(productSaved);
+            invoiceLine.setQuantity(dto.getQuantity());
+
+            this.invoiceLineRepository.save(invoiceLine);
+        }
+
+        return productSaved;
     }
 
 

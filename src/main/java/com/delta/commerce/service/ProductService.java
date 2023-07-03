@@ -1,6 +1,7 @@
 package com.delta.commerce.service;
 
 import com.delta.commerce.dto.filter.ProductFilter;
+import com.delta.commerce.dto.request.AddProductsRequestDto;
 import com.delta.commerce.dto.request.ProductRequestDto;
 import com.delta.commerce.entity.Category;
 import com.delta.commerce.entity.Product;
@@ -18,4 +19,6 @@ public interface ProductService {
     Product updateProduct(ProductRequestDto dto, Long id);
 
     Category getCategoryById(Long id);
+
+    Product addProductsToStock(AddProductsRequestDto dto, String barcode);
 }
