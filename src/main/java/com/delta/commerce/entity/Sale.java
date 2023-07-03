@@ -21,8 +21,7 @@ public class Sale {
     @Column(name = "sale_id")
     private Long saleId;
 
-    @OneToMany(mappedBy = "sale")
-    private List<Product> products;
+
 
     @Column(name = "total_value")
     private BigDecimal totalValue;
@@ -40,6 +39,9 @@ public class Sale {
 
     @OneToOne(mappedBy = "sale", cascade = CascadeType.ALL)
     private Invoice invoice;
+
+    @OneToMany(mappedBy = "sale")
+    private List<SaleProduct> saleProducts;
 
 
 

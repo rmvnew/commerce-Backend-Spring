@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "Product")
@@ -71,11 +72,9 @@ public class Product {
     @JsonIgnore
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "sale_id",nullable = false)
-    @ToString.Exclude
-    @JsonIgnore
-    private Sale sale;
+    @OneToMany(mappedBy = "product")
+    private List<SaleProduct> saleProducts;
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<InvoiceLine> invoiceLines = new HashSet<>();
@@ -86,7 +85,7 @@ public class Product {
                    double productMinimumStock, BigDecimal productUnitCost,
                    BigDecimal productUnitPrice, boolean isActive,
                    LocalDateTime createAt, LocalDateTime updateAt,
-                   Category category, Sale sale, Set<InvoiceLine> invoiceLines) {
+                   Category category, Set<InvoiceLine> invoiceLines) {
         this.productName = productName;
         this.productBarcode = productBarcode;
         this.productCode = productCode;
@@ -101,7 +100,6 @@ public class Product {
         this.createAt = createAt;
         this.updateAt = updateAt;
         this.category = category;
-        this.sale = sale;
         this.invoiceLines = invoiceLines;
     }
 }
