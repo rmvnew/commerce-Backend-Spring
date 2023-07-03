@@ -27,14 +27,16 @@ public class ProductRequestDto {
     @NotBlank
     private String productUnitOfMeasurement;
 
-    private double productQuantity;
+    private Double productQuantity;
 
-    private double productMinimumStock;
+    private Double productMinimumStock;
 
     private BigDecimal productUnitCost;
 
     private BigDecimal productUnitPrice;
 
     private Long categoryId;
+
+    private String invoiceNumber;
 
 }
