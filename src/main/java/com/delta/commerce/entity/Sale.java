@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "Sale")
 @Table(name = "tb_sale")
@@ -41,8 +42,16 @@ public class Sale {
     private Invoice invoice;
 
     @OneToMany(mappedBy = "sale")
-    private List<SaleProduct> saleProducts;
+    private Set<SaleProduct> saleProducts;
 
-
-
+    public Sale(BigDecimal totalValue, LocalDateTime createAt,
+                User user, Client client, Invoice invoice,
+                Set<SaleProduct> saleProducts) {
+        this.totalValue = totalValue;
+        this.createAt = createAt;
+        this.user = user;
+        this.client = client;
+        this.invoice = invoice;
+        this.saleProducts = saleProducts;
+    }
 }

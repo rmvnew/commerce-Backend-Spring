@@ -27,11 +27,11 @@ public class SaleProduct {
     private Product product;
 
     @Column(name = "quantity")
-    private int quantity;
+    private double quantity;
 
     // outras propriedades, como preço do produto na venda, se necessário
 
-    public SaleProduct(Sale sale, Product product, int quantity) {
+    public SaleProduct(Sale sale, Product product, double quantity) {
         this.sale = sale;
         this.product = product;
         this.quantity = quantity;
