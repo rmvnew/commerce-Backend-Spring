@@ -8,7 +8,8 @@ public class WorkOrderLine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "work_order_line_id")
+    private Long workOrderLineId;
 
     @ManyToOne
     @JoinColumn(name = "work_order_id")
@@ -18,7 +19,16 @@ public class WorkOrderLine {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @ManyToOne
+    @JoinColumn(name = "repair_job_id")
+    private RepairJob repairJob;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_product_id")
+    private CustomerProduct customerProduct;
+
+    @Column(name = "used")
     private boolean used; // foi usado ou retornado ao estoque?
 
-    // outros atributos necessários...
+
 }
