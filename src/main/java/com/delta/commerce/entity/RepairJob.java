@@ -16,7 +16,8 @@ public class RepairJob {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "repair_job_id")
+    private Long repairJobId;
 
     @Column(name = "description")
     private String description;

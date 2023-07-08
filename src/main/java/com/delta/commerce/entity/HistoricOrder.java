@@ -9,7 +9,8 @@ public class HistoricOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "historic_order_id")
+    private Long historicOrderId;
 
     @ManyToOne
     @JoinColumn(name = "work_order_id")

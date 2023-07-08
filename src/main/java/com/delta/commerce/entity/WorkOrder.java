@@ -18,7 +18,8 @@ public class WorkOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "work_order_id")
+    private Long workOrderId;
 
     @OneToMany(mappedBy = "workOrder")
     private Set<WorkOrderLine> workOrderLines;
