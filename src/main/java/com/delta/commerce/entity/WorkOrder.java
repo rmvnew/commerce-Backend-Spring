@@ -21,8 +21,6 @@ public class WorkOrder {
     @Column(name = "work_order_id")
     private Long workOrderId;
 
-    @OneToMany(mappedBy = "workOrder")
-    private Set<WorkOrderLine> workOrderLines;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -32,7 +30,7 @@ public class WorkOrder {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @Column(name = "work_order_type")
+    @Column(name = "work_order_status")
     @Enumerated(EnumType.STRING)
     private WorkOrderStatus workOrderStatus;
 
@@ -45,16 +43,24 @@ public class WorkOrder {
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
-    public WorkOrder(Set<WorkOrderLine> workOrderLines, User user,
-                     Client client, WorkOrderStatus workOrderStatus,
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "work_order_repair_job",
+            joinColumns = @JoinColumn(name = "work_order_id"),
+            inverseJoinColumns = @JoinColumn(name = "repair_job_id"))
+    private Set<RepairJob> repairJobs;
+
+
+    public WorkOrder(User user, Client client,
+                     WorkOrderStatus workOrderStatus,
                      boolean isActive, LocalDateTime createAt,
-                     LocalDateTime updateAt) {
-        this.workOrderLines = workOrderLines;
+                     LocalDateTime updateAt, Set<RepairJob> repairJobs) {
         this.user = user;
         this.client = client;
         this.workOrderStatus = workOrderStatus;
         this.isActive = isActive;
         this.createAt = createAt;
         this.updateAt = updateAt;
+        this.repairJobs = repairJobs;
     }
 }

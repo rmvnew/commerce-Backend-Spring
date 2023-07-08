@@ -1,9 +1,20 @@
 package com.delta.commerce.entity;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity(name = "WorkOrderLine")
 @Table(name = "tb_work_order_line")
+@Getter
+@Setter
+@NoArgsConstructor
+
 public class WorkOrderLine {
 
     @Id
@@ -11,24 +22,21 @@ public class WorkOrderLine {
     @Column(name = "work_order_line_id")
     private Long workOrderLineId;
 
-    @ManyToOne
-    @JoinColumn(name = "work_order_id")
-    private WorkOrder workOrder;
+    @ManyToMany(mappedBy = "workOrderLines", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<RepairJob> repairJobs = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "repair_job_id")
-    private RepairJob repairJob;
-
-    @ManyToOne
-    @JoinColumn(name = "customer_product_id")
-    private CustomerProduct customerProduct;
-
     @Column(name = "used")
-    private boolean used; // foi usado ou retornado ao estoque?
+    private boolean used;
 
-
+    public WorkOrderLine(Set<RepairJob> repairJobs,
+                         Product product, boolean used) {
+        this.repairJobs = repairJobs;
+        this.product = product;
+        this.used = used;
+    }
 }

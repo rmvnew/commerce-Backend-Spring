@@ -1,11 +1,14 @@
 package com.delta.commerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "CustomerProduct")
 @Table(name = "tb_customer_product")
@@ -37,14 +40,20 @@ public class CustomerProduct {
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
+    @ManyToMany(mappedBy = "customerProducts", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<RepairJob> repairJobs = new HashSet<>();
+
     public CustomerProduct(String description, String model,
                            String serialNumber, boolean isActive,
-                           LocalDateTime createAt, LocalDateTime updateAt) {
+                           LocalDateTime createAt,
+                           LocalDateTime updateAt, Set<RepairJob> repairJobs) {
         this.description = description;
         this.model = model;
         this.serialNumber = serialNumber;
         this.isActive = isActive;
         this.createAt = createAt;
         this.updateAt = updateAt;
+        this.repairJobs = repairJobs;
     }
 }
