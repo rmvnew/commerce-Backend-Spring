@@ -1,9 +1,6 @@
 package com.delta.commerce.dto.request;
 
-import com.delta.commerce.entity.CustomerProduct;
 import lombok.Data;
-
-import java.time.Duration;
 
 @Data
 public class RepairJobRequestDto {
@@ -14,7 +11,7 @@ public class RepairJobRequestDto {
 
     private Double price;
 
-    private Duration estimatedDuration;
+    private Integer estimatedDuration;
 
     private CustomerProductRequestDto customerProductRequestDto;
 }

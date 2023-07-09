@@ -33,7 +33,7 @@ public class RepairJob {
     private BigDecimal price;
 
     @Column(name = "estimated_duration")
-    private Duration estimatedDuration;
+    private Integer estimatedDuration;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -55,7 +55,7 @@ public class RepairJob {
     private Set<WorkOrderLine> workOrderLines;
 
     public RepairJob(String description, String reportedDefect, BigDecimal price,
-                     Duration estimatedDuration, User user,
+                     Integer estimatedDuration, User user,
                      CustomerProduct customerProduct,
                      Set<WorkOrder> workOrders, Set<WorkOrderLine> workOrderLines) {
         this.description = description;

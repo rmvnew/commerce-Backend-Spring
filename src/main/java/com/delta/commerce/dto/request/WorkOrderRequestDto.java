@@ -8,9 +8,6 @@ import java.util.Set;
 @Data
 public class WorkOrderRequestDto {
 
-
-    private Long user_id;
-
     private Long client_id;
 
     private WorkOrderStatus workOrderStatus;
