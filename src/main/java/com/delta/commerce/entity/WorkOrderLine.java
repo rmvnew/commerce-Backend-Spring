@@ -40,4 +40,10 @@ public class WorkOrderLine {
     private Double returned;
 
 
+    public WorkOrderLine(Product product, Double quantity, Double used, Double returned) {
+        this.product = product;
+        this.quantity = quantity;
+        this.used = used;
+        this.returned = returned;
+    }
 }

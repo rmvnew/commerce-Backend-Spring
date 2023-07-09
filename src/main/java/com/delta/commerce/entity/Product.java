@@ -72,7 +72,8 @@ public class Product {
     @JsonIgnore
     private Category category;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<SaleProduct> saleProducts;
 
 

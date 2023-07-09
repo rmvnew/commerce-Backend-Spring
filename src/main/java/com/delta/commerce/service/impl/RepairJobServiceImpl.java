@@ -11,4 +11,5 @@ public class RepairJobServiceImpl implements RepairJobService {
     @Autowired
     private RepairJobRepository repairJobRepository;
 
+
 }

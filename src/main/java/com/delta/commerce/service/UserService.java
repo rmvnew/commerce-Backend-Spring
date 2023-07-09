@@ -17,7 +17,7 @@ public interface UserService {
 
     UserResponse userUpdate(UpdateUserRequestDto dto, Long id);
 
-    UserResponse findById(Long id);
+    User findById(Long id);
 
     void recoverCode(String email);
 
