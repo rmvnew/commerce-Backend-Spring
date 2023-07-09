@@ -1,18 +1,20 @@
 package com.delta.commerce.dto.request;
 
+import com.delta.commerce.enums.WorkOrderStatus;
 import lombok.Data;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.Set;
 
 @Data
 public class WorkOrderRequestDto {
 
-    private LocalDateTime createAt;
+
     private Long user_id;
+
     private Long client_id;
-    private Long invoice_id;
-    private Map<Long, Double> products;
+
+    private WorkOrderStatus workOrderStatus;
+
+    private Set<RepairJobRequestDto> repairJobRequestDtos;
 
 }

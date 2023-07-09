@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,14 +26,18 @@ public class RepairJob {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "reported_defect")
+    private String reportedDefect;
+
     @Column(name = "price")
-    private Double price;
+    private BigDecimal price;
 
     @Column(name = "estimated_duration")
     private Duration estimatedDuration;
 
-    @Column(name = "technician")
-    private String technician;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "customer_product_id")
@@ -49,13 +54,15 @@ public class RepairJob {
             inverseJoinColumns = @JoinColumn(name = "work_order_line_id"))
     private Set<WorkOrderLine> workOrderLines;
 
-    public RepairJob(String description, Double price, Duration estimatedDuration,
-                     String technician, CustomerProduct customerProduct,
+    public RepairJob(String description, String reportedDefect, BigDecimal price,
+                     Duration estimatedDuration, User user,
+                     CustomerProduct customerProduct,
                      Set<WorkOrder> workOrders, Set<WorkOrderLine> workOrderLines) {
         this.description = description;
+        this.reportedDefect = reportedDefect;
         this.price = price;
         this.estimatedDuration = estimatedDuration;
-        this.technician = technician;
+        this.user = user;
         this.customerProduct = customerProduct;
         this.workOrders = workOrders;
         this.workOrderLines = workOrderLines;

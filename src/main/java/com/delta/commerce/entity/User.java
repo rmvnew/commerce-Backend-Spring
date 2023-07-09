@@ -60,6 +60,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<WorkOrder> workOrders;
 
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private Set<RepairJob> repairJobs;
+
     public User(String userCompleteName, String userEmail,
                 String userPassword, String userEnrollment,
                 boolean isActive,

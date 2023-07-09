@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -20,6 +21,9 @@ public class WorkOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "work_order_id")
     private Long workOrderId;
+
+    @Column(name = "work_order_number")
+    private Integer workOrderNumber;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -49,16 +53,17 @@ public class WorkOrder {
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
-    public WorkOrder(User user, Client client,
-                     WorkOrderStatus workOrderStatus,
-                     boolean isActive, LocalDateTime createAt,
-                     LocalDateTime updateAt, Set<RepairJob> repairJobs) {
+    public WorkOrder(Integer workOrderNumber, User user,
+                     Client client, WorkOrderStatus workOrderStatus,
+                     Set<RepairJob> repairJobs, boolean isActive,
+                     LocalDateTime createAt, LocalDateTime updateAt) {
+        this.workOrderNumber = workOrderNumber;
         this.user = user;
         this.client = client;
         this.workOrderStatus = workOrderStatus;
+        this.repairJobs = repairJobs;
         this.isActive = isActive;
         this.createAt = createAt;
         this.updateAt = updateAt;
-        this.repairJobs = repairJobs;
     }
 }

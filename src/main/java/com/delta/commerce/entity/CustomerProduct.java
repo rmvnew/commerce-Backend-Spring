@@ -23,7 +23,7 @@ public class CustomerProduct {
     private Long costumerProductId;
 
     @Column(name = "description")
-    private String description;
+    private String brand;
 
     @Column(name = "model")
     private String model;
@@ -43,11 +43,11 @@ public class CustomerProduct {
     @OneToMany(mappedBy = "customerProduct", fetch = FetchType.LAZY)
     private Set<RepairJob> repairJobs = new HashSet<>();
 
-    public CustomerProduct(String description, String model,
+    public CustomerProduct(String brand, String model,
                            String serialNumber, boolean isActive,
                            LocalDateTime createAt,
                            LocalDateTime updateAt, Set<RepairJob> repairJobs) {
-        this.description = description;
+        this.brand = brand;
         this.model = model;
         this.serialNumber = serialNumber;
         this.isActive = isActive;
