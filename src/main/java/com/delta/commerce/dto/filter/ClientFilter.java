@@ -7,6 +7,7 @@ public class ClientFilter {
 
     private String clientName;
     private String clientCnpj;
+    private String clientCpf;
     private String clientEmail;
     private String clientResponsible;
 

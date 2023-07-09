@@ -12,7 +12,9 @@ public class ClientRequestDto {
     @Size(min = 5, max = 50)
     private String clientName;
 
+
     private String clientCnpj;
+
 
     private String clientCpf;
 
@@ -24,8 +26,10 @@ public class ClientRequestDto {
     @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "O nome deve conter apenas letras e espaços")
     private String clientResponsible;
 
+    private String telephone;
+
     private AddressRequestDto addressRequestDto;
 
-    private TelephoneRequestDto telephoneRequestDto;
+
 
 }

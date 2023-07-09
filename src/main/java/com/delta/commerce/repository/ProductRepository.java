@@ -39,4 +39,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     );
 
 
+
+    @Query("""
+            select p from Product p
+            where p.isActive = true AND
+            p.productBarcode = :barcode
+                        """)
+    Optional<Product> findByProductBarcode(@Param("barcode") String barcode);
+
 }

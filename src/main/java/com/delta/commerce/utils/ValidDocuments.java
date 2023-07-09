@@ -15,6 +15,9 @@ public class ValidDocuments {
 
 
     public boolean isCPF(String CPF) {
+
+        CPF = CPF.replaceAll("[^0-9]", "");
+
         if (CPF.equals("00000000000") ||
                 CPF.equals("11111111111") ||
                 CPF.equals("22222222222") ||
@@ -68,6 +71,8 @@ public class ValidDocuments {
 
 
     public boolean isCNPJ(String CNPJ) {
+        CNPJ = CNPJ.replaceAll("[^0-9]", ""); // Remove qualquer caractere que não seja número
+
         if (CNPJ.equals("00000000000000") ||
                 CNPJ.equals("11111111111111") ||
                 CNPJ.equals("22222222222222") ||
@@ -89,14 +94,12 @@ public class ValidDocuments {
             peso = 2;
             for (i = 11; i >= 0; i--) {
                 num = (int)(CNPJ.charAt(i) - 48);
-                sm = sm + (num * peso);
-                peso = peso + 1;
-                if (peso == 10)
-                    peso = 2;
+                sm += num * peso;
+                peso = peso < 9 ? peso + 1 : 2;
             }
 
             r = sm % 11;
-            if ((r == 0) || (r == 1))
+            if (r == 0 || r == 1)
                 dig13 = '0';
             else
                 dig13 = (char)((11 - r) + 48);
@@ -105,22 +108,21 @@ public class ValidDocuments {
             peso = 2;
             for (i = 12; i >= 0; i--) {
                 num = (int)(CNPJ.charAt(i) - 48);
-                sm = sm + (num * peso);
-                peso = peso + 1;
-                if (peso == 10)
-                    peso = 2;
+                sm += num * peso;
+                peso = peso < 9 ? peso + 1 : 2;
             }
 
             r = sm % 11;
-            if ((r == 0) || (r == 1))
+            if (r == 0 || r == 1)
                 dig14 = '0';
             else
                 dig14 = (char)((11 - r) + 48);
 
             return (dig13 == CNPJ.charAt(12)) && (dig14 == CNPJ.charAt(13));
-        } catch (InputMismatchException erro) {
+        } catch (Exception e) {
             return(false);
         }
     }
+
 
 }

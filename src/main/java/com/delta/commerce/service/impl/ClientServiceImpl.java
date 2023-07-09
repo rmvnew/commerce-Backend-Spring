@@ -5,13 +5,11 @@ import com.delta.commerce.dto.request.ClientRequestDto;
 import com.delta.commerce.dto.response.ClientResponseDto;
 import com.delta.commerce.entity.Address;
 import com.delta.commerce.entity.Client;
-import com.delta.commerce.entity.Telephone;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
 import com.delta.commerce.mappers.ClientMapper;
 import com.delta.commerce.repository.AddressRepository;
 import com.delta.commerce.repository.ClientRepository;
-import com.delta.commerce.repository.TelephoneRepository;
 import com.delta.commerce.service.ClientService;
 import com.delta.commerce.utils.ValidDocuments;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +31,6 @@ public class ClientServiceImpl implements ClientService {
     private AddressRepository addressRepository;
 
     @Autowired
-    private TelephoneRepository telephoneRepository;
-
-    @Autowired
     private ClientMapper clientMapper;
 
     @Override
@@ -52,13 +47,14 @@ public class ClientServiceImpl implements ClientService {
 
         if (dto.isCompany()) {
             if (ValidDocuments.getInstance().isCNPJ(dto.getClientCnpj())) {
-                cnpj = dto.getClientCnpj();
+                cnpj = dto.getClientCnpj().replaceAll("[^0-9]", "");
+                ;
             } else {
                 throw new CustomException(ErrorCustom.DOCUMENT_COMPANY_INVALID);
             }
         } else {
             if (ValidDocuments.getInstance().isCPF(dto.getClientCpf())) {
-                cpf = dto.getClientCpf();
+                cpf = dto.getClientCpf().replaceAll("[^0-9]", "");
             } else {
                 throw new CustomException(ErrorCustom.DOCUMENT_CLIENT_INVALID);
             }
@@ -81,6 +77,7 @@ public class ClientServiceImpl implements ClientService {
         client.setClientEmail(dto.getClientEmail());
         client.setClientName(dto.getClientName().toUpperCase());
         client.setClientResponsible(dto.getClientResponsible());
+        client.setTelephone(dto.getTelephone());
         client.setActive(true);
         client.setCreateAt(LocalDateTime.now());
         client.setUpdateAt(LocalDateTime.now());
@@ -88,16 +85,6 @@ public class ClientServiceImpl implements ClientService {
 
         var clientSaved = this.clientRepository.save(client);
 
-        var telephones = dto.getTelephoneRequestDto().getTelephoneNumbers().stream()
-                .map(number -> {
-                    var telephone = new Telephone();
-                    telephone.setClient(clientSaved);
-                    telephone.setTelephoneNumber(number);
-
-                    return telephone;
-                }).collect(Collectors.toList());
-
-        this.telephoneRepository.saveAll(telephones);
 
         return clientMapper.toDto(clientSaved);
     }
@@ -112,11 +99,21 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Page<ClientResponseDto> getAllClients(ClientFilter filter, Pageable page) {
 
-        var cnpj = filter.getClientCnpj() != null ? (filter.getClientCnpj() != "" ? filter.getClientCnpj() : null) : null;
+        var cnpj = filter.getClientCnpj() != null ? (filter.getClientCnpj() != "" ? filter.getClientCnpj().replaceAll("[^0-9]", "") : null) : null;
+        var cpf = filter.getClientCpf() != null ? (filter.getClientCpf() != "" ? filter.getClientCpf().replaceAll("[^0-9]", "") : null) : null;
+
+        if (cnpj != null && !ValidDocuments.getInstance().isCNPJ(cnpj)) {
+            throw new IllegalArgumentException("CNPJ anválido: " + cnpj);
+        }
+
+        if (cpf != null && !ValidDocuments.getInstance().isCPF(cpf)) {
+            throw new IllegalArgumentException("CPF anválido: " + cpf);
+        }
 
         var res = this.clientRepository.getAllClients(
                 filter.getClientName(),
                 cnpj,
+                cpf,
                 filter.getClientEmail(),
                 filter.getClientResponsible(),
                 page
@@ -136,13 +133,13 @@ public class ClientServiceImpl implements ClientService {
 
         if (dto.isCompany()) {
             if (ValidDocuments.getInstance().isCNPJ(dto.getClientCnpj())) {
-                cnpj = dto.getClientCnpj();
+                cnpj = dto.getClientCnpj().replaceAll("[^0-9]", "");
             } else {
                 throw new CustomException(ErrorCustom.DOCUMENT_COMPANY_INVALID);
             }
         } else {
             if (ValidDocuments.getInstance().isCPF(dto.getClientCpf())) {
-                cpf = dto.getClientCpf();
+                cpf = dto.getClientCpf().replaceAll("[^0-9]", "");
             } else {
                 throw new CustomException(ErrorCustom.DOCUMENT_CLIENT_INVALID);
             }
@@ -161,23 +158,20 @@ public class ClientServiceImpl implements ClientService {
         client.setClientEmail(dto.getClientEmail());
         client.setClientName(dto.getClientName().toUpperCase());
         client.setClientResponsible(dto.getClientResponsible());
+        client.setTelephone(dto.getTelephone());
         client.setActive(true);
-        client.setCreateAt(LocalDateTime.now());
         client.setUpdateAt(LocalDateTime.now());
 
         var clientSaved = this.clientRepository.save(client);
 
-        var telephones = dto.getTelephoneRequestDto().getTelephoneNumbers().stream()
-                .map(number -> {
-                    var telephone = new Telephone();
-                    telephone.setClient(clientSaved);
-                    telephone.setTelephoneNumber(number);
-
-                    return telephone;
-                }).collect(Collectors.toList());
-
-        this.telephoneRepository.saveAll(telephones);
 
         return clientMapper.toDto(clientSaved);
+    }
+
+    @Override
+    public void changeStatus(Long id) {
+        var client = this.findById(id);
+        client.setActive(false);
+        this.clientRepository.save(client);
     }
 }

@@ -54,8 +54,14 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "profile_id"))
     private Set<Profile> profiles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Sale> sales;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private Set<WorkOrder> workOrders;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private Set<RepairJob> repairJobs;
 
     public User(String userCompleteName, String userEmail,
                 String userPassword, String userEnrollment,
