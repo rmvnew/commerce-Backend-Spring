@@ -30,13 +30,14 @@ public class WorkOrderLine {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Column(name = "used")
-    private boolean used;
+    @Column(name = "quantity")
+    private Double quantity;
 
-    public WorkOrderLine(Set<RepairJob> repairJobs,
-                         Product product, boolean used) {
-        this.repairJobs = repairJobs;
-        this.product = product;
-        this.used = used;
-    }
+    @Column(name = "used")
+    private Double used;
+
+    @Column(name = "returned")
+    private Double returned;
+
+
 }

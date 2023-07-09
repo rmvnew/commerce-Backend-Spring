@@ -21,7 +21,6 @@ public class WorkOrder {
     @Column(name = "work_order_id")
     private Long workOrderId;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -34,6 +33,13 @@ public class WorkOrder {
     @Enumerated(EnumType.STRING)
     private WorkOrderStatus workOrderStatus;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "work_order_repair_job",
+            joinColumns = @JoinColumn(name = "work_order_id"),
+            inverseJoinColumns = @JoinColumn(name = "repair_job_id"))
+    private Set<RepairJob> repairJobs;
+
     @Column(name = "is_active")
     private boolean isActive;
 
@@ -42,14 +48,6 @@ public class WorkOrder {
 
     @Column(name = "update_at")
     private LocalDateTime updateAt;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "work_order_repair_job",
-            joinColumns = @JoinColumn(name = "work_order_id"),
-            inverseJoinColumns = @JoinColumn(name = "repair_job_id"))
-    private Set<RepairJob> repairJobs;
-
 
     public WorkOrder(User user, Client client,
                      WorkOrderStatus workOrderStatus,

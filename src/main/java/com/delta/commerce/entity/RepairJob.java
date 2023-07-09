@@ -34,12 +34,9 @@ public class RepairJob {
     @Column(name = "technician")
     private String technician;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "repair_job_customer_product",
-            joinColumns = @JoinColumn(name = "repair_job_id"),
-            inverseJoinColumns = @JoinColumn(name = "customer_product_id"))
-    private Set<CustomerProduct> customerProducts;
+    @ManyToOne
+    @JoinColumn(name = "customer_product_id")
+    private CustomerProduct customerProduct;
 
     @ManyToMany(mappedBy = "repairJobs", fetch = FetchType.LAZY)
     @JsonIgnore
@@ -52,17 +49,14 @@ public class RepairJob {
             inverseJoinColumns = @JoinColumn(name = "work_order_line_id"))
     private Set<WorkOrderLine> workOrderLines;
 
-
-    public RepairJob(String description, Double price,
-                     Duration estimatedDuration, String technician,
-                     Set<CustomerProduct> customerProducts,
-                     Set<WorkOrder> workOrders,
-                     Set<WorkOrderLine> workOrderLines) {
+    public RepairJob(String description, Double price, Duration estimatedDuration,
+                     String technician, CustomerProduct customerProduct,
+                     Set<WorkOrder> workOrders, Set<WorkOrderLine> workOrderLines) {
         this.description = description;
         this.price = price;
         this.estimatedDuration = estimatedDuration;
         this.technician = technician;
-        this.customerProducts = customerProducts;
+        this.customerProduct = customerProduct;
         this.workOrders = workOrders;
         this.workOrderLines = workOrderLines;
     }

@@ -40,8 +40,7 @@ public class CustomerProduct {
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
-    @ManyToMany(mappedBy = "customerProducts", fetch = FetchType.LAZY)
-    @JsonIgnore
+    @OneToMany(mappedBy = "customerProduct", fetch = FetchType.LAZY)
     private Set<RepairJob> repairJobs = new HashSet<>();
 
     public CustomerProduct(String description, String model,
