@@ -6,4 +6,6 @@ public interface WorkOrderService {
 
     void createWorkOrder(WorkOrderRequestDto dto);
 
+    Integer getLastOrderNumber();
+
 }

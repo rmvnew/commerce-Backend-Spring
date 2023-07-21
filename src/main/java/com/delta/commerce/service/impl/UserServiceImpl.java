@@ -126,11 +126,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse findById(Long id) {
+    public User findById(Long id) {
         var user = this.userRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCustom.NOT_FOUND));
 
-        return userMapper.toDto(user);
+        return user;
     }
 
     @Override

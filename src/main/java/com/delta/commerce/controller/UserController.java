@@ -5,6 +5,7 @@ import com.delta.commerce.dto.request.CreateUserRequestDto;
 import com.delta.commerce.dto.request.RecoverPassRequestDto;
 import com.delta.commerce.dto.request.UpdateUserRequestDto;
 import com.delta.commerce.dto.response.UserResponse;
+import com.delta.commerce.mappers.UserMapper;
 import com.delta.commerce.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -56,7 +60,7 @@ public class UserController {
     public ResponseEntity<UserResponse> findById(
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(this.userService.findById(id));
+        return ResponseEntity.ok(this.userMapper.toDto(this.userService.findById(id)));
     }
 
     @PostMapping(value = "/recover-code")
