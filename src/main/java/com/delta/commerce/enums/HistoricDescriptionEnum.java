@@ -9,6 +9,10 @@ public enum HistoricDescriptionEnum {
     CUSTOMER_PRODUCT_UPDATE("Produto do cliente atualizado"),
     CUSTOMER_PRODUCT_DESACTIVED("Produto do cliente desativado"),
 
+    PRODUCT_CREATE("Produto cadastrado"),
+    PRODUCT_UPDATE("Produto atualizado"),
+    PRODUCT_DESACTIVED("Produto desativado"),
+
     INVOICE_CREATE("Nota cadastrado"),
     INVOICE_UPDATE("Nota atualizada"),
     INVOICE_DESACTIVED("Nota desativado"),

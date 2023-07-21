@@ -21,4 +21,6 @@ public interface ProductService {
     Category getCategoryById(Long id);
 
     Product addProductsToStock(AddProductsRequestDto dto, String barcode);
+
+    void changeStatus(Long id);
 }

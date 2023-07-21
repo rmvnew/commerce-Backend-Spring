@@ -7,13 +7,16 @@ import com.delta.commerce.entity.Category;
 import com.delta.commerce.entity.Invoice;
 import com.delta.commerce.entity.InvoiceLine;
 import com.delta.commerce.entity.Product;
+import com.delta.commerce.enums.HistoricDescriptionEnum;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
 import com.delta.commerce.repository.CategoryRepository;
 import com.delta.commerce.repository.InvoiceLineRepository;
 import com.delta.commerce.repository.ProductRepository;
+import com.delta.commerce.service.HistoricService;
 import com.delta.commerce.service.InvoiceService;
 import com.delta.commerce.service.ProductService;
+import com.delta.commerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +40,11 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private InvoiceLineRepository invoiceLineRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private HistoricService historicService;
 
     @Override
     public Product createProduct(ProductRequestDto dto) {
@@ -77,6 +85,10 @@ public class ProductServiceImpl implements ProductService {
 
             this.invoiceLineRepository.save(invoiceLine);
         }
+
+        this.historicService.saveHistoric(
+                Product.class, productSaved.getProductId(),
+                this.userService.getLoggedInUser(), HistoricDescriptionEnum.PRODUCT_CREATE);
 
         return productSaved;
     }
@@ -130,6 +142,10 @@ public class ProductServiceImpl implements ProductService {
             this.invoiceLineRepository.save(invoiceLine);
         }
 
+        this.historicService.saveHistoric(
+                Product.class, productSaved.getProductId(),
+                this.userService.getLoggedInUser(), HistoricDescriptionEnum.PRODUCT_CREATE);
+
         return productSaved;
 
 
@@ -164,6 +180,19 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return productSaved;
+    }
+
+    @Override
+    public void changeStatus(Long id) {
+
+        var product = this.findById(id);
+        product.setActive(false);
+        var productSaved = this.productRepository.save(product);
+
+        this.historicService.saveHistoric(
+                Product.class, productSaved.getProductId(),
+                this.userService.getLoggedInUser(), HistoricDescriptionEnum.PRODUCT_CREATE);
+
     }
 
 
