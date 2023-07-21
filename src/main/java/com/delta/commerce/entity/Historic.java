@@ -35,6 +35,10 @@ public class Historic {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
-
-
+    public Historic(String historicEntity, Long historicEntityId, String historicDescription, User user) {
+        this.historicEntity = historicEntity;
+        this.historicEntityId = historicEntityId;
+        this.historicDescription = historicDescription;
+        this.user = user;
+    }
 }

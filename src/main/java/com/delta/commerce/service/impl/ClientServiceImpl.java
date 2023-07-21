@@ -5,12 +5,15 @@ import com.delta.commerce.dto.request.ClientRequestDto;
 import com.delta.commerce.dto.response.ClientResponseDto;
 import com.delta.commerce.entity.Address;
 import com.delta.commerce.entity.Client;
+import com.delta.commerce.enums.HistoricDescriptionEnum;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
 import com.delta.commerce.mappers.ClientMapper;
 import com.delta.commerce.repository.AddressRepository;
 import com.delta.commerce.repository.ClientRepository;
 import com.delta.commerce.service.ClientService;
+import com.delta.commerce.service.HistoricService;
+import com.delta.commerce.service.UserService;
 import com.delta.commerce.utils.ValidDocuments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +35,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientMapper clientMapper;
+
+    @Autowired
+    private HistoricService historicService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public ClientResponseDto createClient(ClientRequestDto dto) {
@@ -85,6 +94,9 @@ public class ClientServiceImpl implements ClientService {
 
         var clientSaved = this.clientRepository.save(client);
 
+        this.historicService.saveHistoric(
+                Client.class, clientSaved.getClientId(), this.userService.getLoggedInUser(),
+                HistoricDescriptionEnum.CLIENT_CREATE);
 
         return clientMapper.toDto(clientSaved);
     }
@@ -164,6 +176,9 @@ public class ClientServiceImpl implements ClientService {
 
         var clientSaved = this.clientRepository.save(client);
 
+        this.historicService.saveHistoric(
+                Client.class, clientSaved.getClientId(), this.userService.getLoggedInUser(),
+                HistoricDescriptionEnum.CLIENT_UPDATE);
 
         return clientMapper.toDto(clientSaved);
     }
@@ -172,6 +187,10 @@ public class ClientServiceImpl implements ClientService {
     public void changeStatus(Long id) {
         var client = this.findById(id);
         client.setActive(false);
-        this.clientRepository.save(client);
+        var clientSaved = this.clientRepository.save(client);
+
+        this.historicService.saveHistoric(
+                Client.class, clientSaved.getClientId(), this.userService.getLoggedInUser(),
+                HistoricDescriptionEnum.CLIENT_CREATE);
     }
 }

@@ -3,9 +3,11 @@ package com.delta.commerce.service.impl;
 import com.delta.commerce.dto.request.RepairJobRequestDto;
 import com.delta.commerce.dto.request.WorkOrderLineRequestDto;
 import com.delta.commerce.dto.request.WorkOrderRequestDto;
+import com.delta.commerce.entity.Historic;
 import com.delta.commerce.entity.RepairJob;
 import com.delta.commerce.entity.WorkOrder;
 import com.delta.commerce.entity.WorkOrderLine;
+import com.delta.commerce.enums.HistoricDescriptionEnum;
 import com.delta.commerce.enums.WorkOrderStatus;
 import com.delta.commerce.repository.*;
 import com.delta.commerce.service.*;
@@ -36,6 +38,9 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private HistoricService historicService;
 
 
     @Override
@@ -90,7 +95,10 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         currentOrderNumber++;
         order.setWorkOrderNumber(currentOrderNumber);
 
-        this.workOrderRepository.save(order);
+        var workOrderSaved = this.workOrderRepository.save(order);
+
+        this.historicService.saveHistoric(WorkOrder.class, workOrderSaved.getWorkOrderId(),
+                this.userService.getLoggedInUser(), HistoricDescriptionEnum.WORK_ORDER_CREATE);
 
     }
 
