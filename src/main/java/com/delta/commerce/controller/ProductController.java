@@ -67,5 +67,15 @@ public class ProductController {
         return ResponseEntity.ok(this.productService.updateProduct(dto, id));
     }
 
+    @PatchMapping(value = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN_WRITE')")
+    public void changeStatus(
+            @PathVariable Long id
+    ) {
+        this.productService.changeStatus(id);
+    }
+
+
+
 
 }
