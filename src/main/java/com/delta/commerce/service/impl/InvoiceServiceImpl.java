@@ -6,10 +6,13 @@ import com.delta.commerce.entity.Invoice;
 import com.delta.commerce.entity.InvoiceLine;
 import com.delta.commerce.entity.Sale;
 import com.delta.commerce.entity.Supplier;
+import com.delta.commerce.enums.HistoricDescriptionEnum;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
 import com.delta.commerce.repository.InvoiceRepository;
+import com.delta.commerce.service.HistoricService;
 import com.delta.commerce.service.InvoiceService;
+import com.delta.commerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +26,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
     private InvoiceRepository invoiceRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private HistoricService historicService;
 
     @Override
     public void createInvoice(InvoiceRequestDto dto) {
@@ -46,7 +55,12 @@ public class InvoiceServiceImpl implements InvoiceService {
                 sale
         );
 
-        this.invoiceRepository.save(invoice);
+        var invoiceSaved = this.invoiceRepository.save(invoice);
+
+        this.historicService.saveHistoric(
+                Invoice.class, invoiceSaved.getInvoiceId(),
+                this.userService.getLoggedInUser(), HistoricDescriptionEnum.INVOICE_CREATE);
+
     }
 
     @Override
@@ -94,7 +108,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setInvoiceLines(invoiceLine);
         invoice.setSale(sale);
 
-        this.invoiceRepository.save(invoice);
+        var invoiceSaved = this.invoiceRepository.save(invoice);
+
+        this.historicService.saveHistoric(
+                Invoice.class, invoiceSaved.getInvoiceId(),
+                this.userService.getLoggedInUser(), HistoricDescriptionEnum.INVOICE_UPDATE);
 
 
     }
