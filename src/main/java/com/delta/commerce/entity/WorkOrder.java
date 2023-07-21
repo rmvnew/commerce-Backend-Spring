@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -43,6 +42,9 @@ public class WorkOrder {
             joinColumns = @JoinColumn(name = "work_order_id"),
             inverseJoinColumns = @JoinColumn(name = "repair_job_id"))
     private Set<RepairJob> repairJobs;
+
+
+
 
     @Column(name = "is_active")
     private boolean isActive;
