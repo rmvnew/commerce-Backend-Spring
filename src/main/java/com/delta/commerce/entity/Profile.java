@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +24,15 @@ public class Profile {
 
     @Column(name = "profile_name")
     private String profileName;
+
+    @Column(name = "is_active")
+    private boolean isActive;
+
+    @Column(name = "create_at")
+    private LocalDateTime createAt;
+
+    @Column(name = "update_at")
+    private LocalDateTime updateAt;
 
     @ManyToMany(mappedBy = "profiles", fetch = FetchType.LAZY)
     @JsonIgnore

@@ -17,6 +17,10 @@ public enum HistoricDescriptionEnum {
     INVOICE_UPDATE("Nota atualizada"),
     INVOICE_DESACTIVED("Nota desativado"),
 
+    PROFILE_CREATE("Perfil cadastrado"),
+    PROFILE_UPDATE("Perfil atualizada"),
+    PROFILE_DESACTIVED("Perfil desativado"),
+
     CLIENT_CREATE("Cliente cadastrado"),
     CLIENT_UPDATE("Cliente atualizado"),
     CLIENT_DESACTIVED("Cliente desativado");

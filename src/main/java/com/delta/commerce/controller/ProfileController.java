@@ -39,4 +39,24 @@ public class ProfileController {
     }
 
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ADMIN_WRITE')")
+    public ResponseEntity<Profile> updateProfile(
+            @RequestBody @Valid ProfileRequestDto dto,
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(this.profileService.updateProfile(dto, id));
+    }
+
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN_WRITE')")
+    public void changeStatus(
+            @PathVariable Long id
+    ) {
+        this.profileService.changeStatus(id);
+    }
+
+
 }

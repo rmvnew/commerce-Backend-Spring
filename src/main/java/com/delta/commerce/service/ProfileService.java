@@ -11,4 +11,10 @@ public interface ProfileService {
 
     Page<Profile> getAllProfiles(String name, Pageable page);
 
+    Profile findById(Long id);
+
+    Profile updateProfile(ProfileRequestDto dto, Long id);
+
+    void changeStatus(Long id);
+
 }
