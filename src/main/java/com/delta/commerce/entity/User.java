@@ -38,6 +38,9 @@ public class User implements UserDetails {
     @Column(name = "user_enrollment", unique = true)
     private String userEnrollment;
 
+    @Column(name = "user_token")
+    private String userToken;
+
     @Column(name = "user_recover_code", nullable = true)
     private String recoverCode;
 

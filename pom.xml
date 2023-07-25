@@ -96,6 +96,15 @@
             <version>1.6.11</version>
         </dependency>
 
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>0.9.1</version> <!-- verifique se esta é a versão mais recente -->
+            </dependency>
+
+
+
     </dependencies>
 
     <build>

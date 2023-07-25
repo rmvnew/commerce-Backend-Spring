@@ -36,7 +36,8 @@ public class SecurityConfig {
                 .and().authorizeRequests()
                 .antMatchers(
                         HttpMethod.POST,
-                        "/login",
+                        "/auth/login",
+                        "/auth/validate",
                         "/users/recover-code/**",
                         "/users/recover-pass/**",
                         "/users/**"
@@ -67,7 +68,7 @@ public class SecurityConfig {
         final CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*")); // Allow all origins
         configuration.setAllowedMethods(List.of("*")); // Allow all methods
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(false);
         configuration.setAllowedHeaders(List.of("*")); // Allow all headers
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

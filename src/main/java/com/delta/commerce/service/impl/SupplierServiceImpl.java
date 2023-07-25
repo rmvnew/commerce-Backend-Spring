@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class SupplierSericeImpl implements SupplierService {
+public class SupplierServiceImpl implements SupplierService {
 
     @Autowired
     private AddressRepository addressRepository;
