@@ -24,10 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-import java.util.Timer;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -185,12 +182,14 @@ public class UserServiceImpl implements UserService {
         return this.userMapper.toDto(this.userRepository.save(isRegistered));
     }
 
+
     @Override
     public User getLoggedInUser() {
-        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findUserByUserEmail(loggedInUsername)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + loggedInUsername));
+        User loggedInUser = ((Optional<User>) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepository.findUserByUserEmail(loggedInUser.getUserEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + loggedInUser.getUserEmail()));
     }
+
 
     @Override
     public boolean isUserLoggedIn(User user) {
