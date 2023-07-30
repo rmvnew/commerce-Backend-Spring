@@ -23,7 +23,7 @@ public enum ErrorCustom {
     CLIENT_ALREADY_EXISTS(HttpStatus.CONFLICT, 700, "Client already exists!"),
     CLIENT_NOT_FOUND(HttpStatus.NOT_FOUND, 701, "Client not found"),
     DOCUMENT_COMPANY_INVALID(HttpStatus.BAD_REQUEST, 1001, "Document company invalid"),
-    DOCUMENT_CLIENT_INVALID(HttpStatus.BAD_REQUEST, 1002, "Document client invalid"),
+    DOCUMENT_CLIENT_INVALID(HttpStatus.BAD_REQUEST, 1002, "CPF do cliente inválido"),
     DOCUMENT_SUPPLIER_INVALID(HttpStatus.BAD_REQUEST, 1003, "Document supplier invalid"),
     TOKEN_INVALID(HttpStatus.NOT_FOUND, 10000, "Token invalid"),
     TOKEN_NOT_PROVIDED(HttpStatus.NOT_FOUND, 10001, "Token not provided");

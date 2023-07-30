@@ -114,13 +114,13 @@ public class ClientServiceImpl implements ClientService {
         var cnpj = filter.getClientCnpj() != null ? (filter.getClientCnpj() != "" ? filter.getClientCnpj().replaceAll("[^0-9]", "") : null) : null;
         var cpf = filter.getClientCpf() != null ? (filter.getClientCpf() != "" ? filter.getClientCpf().replaceAll("[^0-9]", "") : null) : null;
 
-        if (cnpj != null && !ValidDocuments.getInstance().isCNPJ(cnpj)) {
-            throw new IllegalArgumentException("CNPJ anválido: " + cnpj);
-        }
-
-        if (cpf != null && !ValidDocuments.getInstance().isCPF(cpf)) {
-            throw new IllegalArgumentException("CPF anválido: " + cpf);
-        }
+//        if (cnpj != null && !ValidDocuments.getInstance().isCNPJ(cnpj)) {
+//            throw new IllegalArgumentException("CNPJ anválido: " + cnpj);
+//        }
+//
+//        if (cpf != null && !ValidDocuments.getInstance().isCPF(cpf)) {
+//            throw new IllegalArgumentException("CPF anválido: " + cpf);
+//        }
 
         var res = this.clientRepository.getAllClients(
                 filter.getClientName(),

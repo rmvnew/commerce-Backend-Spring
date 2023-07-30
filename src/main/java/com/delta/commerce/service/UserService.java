@@ -28,4 +28,6 @@ public interface UserService {
     User getLoggedInUser();
 
     boolean isUserLoggedIn(User user);
+
+    User findUserByEmail(String email);
 }

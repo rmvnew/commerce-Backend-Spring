@@ -196,4 +196,10 @@ public class UserServiceImpl implements UserService {
         String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         return user.getUserEmail().equals(loggedInUsername);
     }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return this.userRepository.findUserByUserEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCustom.NOT_FOUND));
+    }
 }
