@@ -65,6 +65,7 @@ public class ProductServiceImpl implements ProductService {
         product.setProductName(dto.getProductName().toUpperCase());
         product.setProductBarcode(dto.getProductBarcode());
         product.setProductCode(dto.getProductCode());
+        product.setProductLocation(dto.getProductLocation());
         product.setProductNcm(dto.getProductNcm());
         product.setProductCfop(dto.getProductCfop());
         product.setProductUnitOfMeasurement(dto.getProductUnitOfMeasurement());
@@ -76,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
 
         var productSaved = this.productRepository.save(product);
 
-        if (!dto.getInvoiceNumber().equals("")) {
+        if (dto.getInvoiceNumber() != null && !dto.getInvoiceNumber().equals("")) {
             var invoice = this.invoiceService.findByNumber(dto.getInvoiceNumber());
             var invoiceLine = new InvoiceLine();
             invoiceLine.setInvoice(invoice);
@@ -121,6 +122,7 @@ public class ProductServiceImpl implements ProductService {
         product.setProductName(dto.getProductName() != null ? dto.getProductName().toUpperCase() : product.getProductName());
         product.setProductBarcode(dto.getProductBarcode() != null ? dto.getProductBarcode() : product.getProductBarcode());
         product.setProductCode(dto.getProductCode() != null ? dto.getProductCode() : product.getProductCode());
+        product.setProductLocation(dto.getProductLocation() != null ? dto.getProductLocation() : product.getProductLocation());
         product.setProductNcm(dto.getProductNcm() != null ? dto.getProductNcm() : product.getProductNcm());
         product.setProductCfop(dto.getProductCfop() != null ? dto.getProductCfop() : product.getProductCfop());
         product.setProductUnitOfMeasurement(dto.getProductUnitOfMeasurement() != null ? dto.getProductUnitOfMeasurement() : product.getProductUnitOfMeasurement());
@@ -132,7 +134,7 @@ public class ProductServiceImpl implements ProductService {
 
         var productSaved = this.productRepository.save(product);
 
-        if (!dto.getInvoiceNumber().equals("")) {
+        if (dto.getInvoiceNumber() != null && !dto.getInvoiceNumber().equals("")) {
             var invoice = this.invoiceService.findByNumber(dto.getInvoiceNumber());
             var invoiceLine = new InvoiceLine();
             invoiceLine.setInvoice(invoice);

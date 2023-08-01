@@ -32,6 +32,9 @@ public class Product {
     @Column(name = "product_barcode")
     private String productBarcode;
 
+    @Column(name = "product_location")
+    private String productLocation;
+
     @Column(name = "product_code")
     private String productCode;
 
@@ -66,13 +69,12 @@ public class Product {
     private LocalDateTime updateAt;
 
 
-    @ManyToOne
-    @JoinColumn(name = "category_id",nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", nullable = false)
     @ToString.Exclude
-    @JsonIgnore
     private Category category;
 
-    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<SaleProduct> saleProducts;
 
@@ -80,15 +82,16 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<InvoiceLine> invoiceLines = new HashSet<>();
 
-    public Product(String productName, String productBarcode, String productCode,
-                   String productNcm, String productCfop,
+    public Product(String productName, String productBarcode, String productLocation,
+                   String productCode, String productNcm, String productCfop,
                    String productUnitOfMeasurement, double productQuantity,
                    double productMinimumStock, BigDecimal productUnitCost,
                    BigDecimal productUnitPrice, boolean isActive,
-                   LocalDateTime createAt, LocalDateTime updateAt,
-                   Category category, Set<InvoiceLine> invoiceLines) {
+                   LocalDateTime createAt, LocalDateTime updateAt, Category category,
+                   List<SaleProduct> saleProducts, Set<InvoiceLine> invoiceLines) {
         this.productName = productName;
         this.productBarcode = productBarcode;
+        this.productLocation = productLocation;
         this.productCode = productCode;
         this.productNcm = productNcm;
         this.productCfop = productCfop;
@@ -101,6 +104,7 @@ public class Product {
         this.createAt = createAt;
         this.updateAt = updateAt;
         this.category = category;
+        this.saleProducts = saleProducts;
         this.invoiceLines = invoiceLines;
     }
 }

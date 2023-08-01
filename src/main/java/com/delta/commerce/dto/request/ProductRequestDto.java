@@ -17,6 +17,8 @@ public class ProductRequestDto {
     @Pattern(regexp = "\\d+",message = "only numbers are allowed")
     private String productBarcode;
 
+    private String productLocation;
+
     @Pattern(regexp = "\\d+",message = "only numbers are allowed")
     private String productCode;
 
