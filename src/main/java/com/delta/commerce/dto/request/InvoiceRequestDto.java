@@ -1,5 +1,6 @@
 package com.delta.commerce.dto.request;
 
+import com.delta.commerce.entity.Client;
 import com.delta.commerce.entity.InvoiceLine;
 import com.delta.commerce.entity.Sale;
 import com.delta.commerce.entity.Supplier;
@@ -20,8 +21,8 @@ public class InvoiceRequestDto {
     private LocalDate dueDate;
     private Double totalAmount;
     private Supplier supplier;
+    private Client client;
     private Boolean paid;
     private LocalDate paymentDate;
-    private Set<InvoiceLine> invoiceLines = new HashSet<>();
-    private Sale sale;
+    private String saleCode;
 }

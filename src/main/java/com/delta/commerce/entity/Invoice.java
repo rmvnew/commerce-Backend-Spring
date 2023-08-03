@@ -44,6 +44,10 @@ public class Invoice {
     @JoinColumn(name = "supplier_id", nullable = true)
     private Supplier supplier;
 
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = true)
+    private Client client;
+
     @Column(name = "paid")
     private Boolean paid;
 
@@ -59,18 +63,18 @@ public class Invoice {
 
     public Invoice(String invoiceNumber, LocalDate invoiceDate,
                    InvoiceTypeEnum invoiceType, LocalDate dueDate,
-                   Double totalAmount, Supplier supplier, Boolean paid,
-                   LocalDate paymentDate, Set<InvoiceLine> invoiceLines,
-                   Sale sale) {
+                   Double totalAmount, Supplier supplier, Client client,
+                   Boolean paid, LocalDate paymentDate, Sale sale) {
         this.invoiceNumber = invoiceNumber;
         this.invoiceDate = invoiceDate;
         this.invoiceType = invoiceType;
         this.dueDate = dueDate;
         this.totalAmount = totalAmount;
         this.supplier = supplier;
+        this.client = client;
         this.paid = paid;
         this.paymentDate = paymentDate;
-        this.invoiceLines = invoiceLines;
+
         this.sale = sale;
     }
 }

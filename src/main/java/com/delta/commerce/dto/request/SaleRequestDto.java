@@ -9,6 +9,7 @@ import java.util.Map;
 @Data
 public class SaleRequestDto {
 
+    private String saleCode;
     private BigDecimal totalValue;
     private LocalDateTime createAt;
     private Long user_id;

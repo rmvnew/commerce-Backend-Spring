@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
@@ -34,5 +35,14 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             where c.clientName = :name
             """)
     Optional<Client> verifyClientByName(@Param("name") String name);
+
+
+
+    @Query("""
+            select c from Client c
+            where c.isActive = true AND
+            (:name is null or c.clientName like concat('%',:name,'%') )
+            """)
+    List<Client> getListClients(@Param("name") String name);
 
 }

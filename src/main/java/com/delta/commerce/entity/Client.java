@@ -50,6 +50,8 @@ public class Client {
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
+    @OneToMany(mappedBy = "client")
+    private Set<Invoice> invoices;
 
     @OneToOne
     private Address address;

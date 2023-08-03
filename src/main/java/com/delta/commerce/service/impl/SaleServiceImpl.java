@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class SaleServiceImpl implements SaleService {
@@ -48,6 +49,7 @@ public class SaleServiceImpl implements SaleService {
         BigDecimal totalValue = BigDecimal.ZERO;
 
         var sale = new Sale();
+        sale.setSaleCode(UUID.randomUUID().toString());
         sale.setCreateAt(LocalDateTime.now());
         sale.setSaleProducts(null);
         sale.setInvoice(invoice.orElse(null));
@@ -87,5 +89,10 @@ public class SaleServiceImpl implements SaleService {
 
         saleSaved.setTotalValue(totalValue);
         this.saleRepository.save(saleSaved);
+    }
+
+    @Override
+    public Sale getSaleByCode(String code) {
+        return this.saleRepository.getSaleByCode(code);
     }
 }

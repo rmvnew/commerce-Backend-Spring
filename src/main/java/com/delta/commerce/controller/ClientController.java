@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/client")
@@ -58,6 +59,14 @@ public class ClientController {
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(this.clientService.findById(id));
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority('USER_READ','ADMIN_READ')")
+    public ResponseEntity<List<Client>> findById(
+            @RequestParam(name = "name", required = false) String name
+    ) {
+        return ResponseEntity.ok(this.clientService.getListClients(name));
     }
 
 

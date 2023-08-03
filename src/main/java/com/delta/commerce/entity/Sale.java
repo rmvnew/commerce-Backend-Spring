@@ -22,7 +22,8 @@ public class Sale {
     @Column(name = "sale_id")
     private Long saleId;
 
-
+    @Column(name = "sale_code")
+    private String saleCode;
 
     @Column(name = "total_value")
     private BigDecimal totalValue;
@@ -44,9 +45,9 @@ public class Sale {
     @OneToMany(mappedBy = "sale")
     private Set<SaleProduct> saleProducts;
 
-    public Sale(BigDecimal totalValue, LocalDateTime createAt,
-                User user, Client client, Invoice invoice,
-                Set<SaleProduct> saleProducts) {
+    public Sale(String saleCode, BigDecimal totalValue, LocalDateTime createAt,
+                User user, Client client, Invoice invoice, Set<SaleProduct> saleProducts) {
+        this.saleCode = saleCode;
         this.totalValue = totalValue;
         this.createAt = createAt;
         this.user = user;

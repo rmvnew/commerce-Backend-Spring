@@ -2,16 +2,14 @@ package com.delta.commerce.service.impl;
 
 import com.delta.commerce.dto.filter.InvoiceFilter;
 import com.delta.commerce.dto.request.InvoiceRequestDto;
-import com.delta.commerce.entity.Invoice;
-import com.delta.commerce.entity.InvoiceLine;
-import com.delta.commerce.entity.Sale;
-import com.delta.commerce.entity.Supplier;
+import com.delta.commerce.entity.*;
 import com.delta.commerce.enums.HistoricDescriptionEnum;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
 import com.delta.commerce.repository.InvoiceRepository;
 import com.delta.commerce.service.HistoricService;
 import com.delta.commerce.service.InvoiceService;
+import com.delta.commerce.service.SaleService;
 import com.delta.commerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,12 +31,24 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Autowired
     private HistoricService historicService;
 
+    @Autowired
+    private SaleService saleService;
+
     @Override
     public void createInvoice(InvoiceRequestDto dto) {
 
-        Set<InvoiceLine> invoiceLine = dto.getInvoiceLines();
-        Supplier supplier = dto.getSupplier();
-        Sale sale = dto.getSale();
+//        Set<InvoiceLine> invoiceLine = !dto.getInvoiceLines().isEmpty() ? dto.getInvoiceLines() : null;
+
+        Sale sale = null;
+
+        if (dto.getSaleCode() != null) {
+
+            sale = this.saleService.getSaleByCode(dto.getSaleCode());
+
+        }
+
+        Supplier supplier = dto.getSupplier() != null ? dto.getSupplier() : null;
+        Client client = dto.getClient();
         LocalDate dueDate = dto.getDueDate();
         Boolean paid = dto.getPaid();
 
@@ -49,9 +59,9 @@ public class InvoiceServiceImpl implements InvoiceService {
                 dueDate,
                 dto.getTotalAmount(),
                 supplier,
+                client,
                 paid,
                 dto.getPaymentDate(),
-                invoiceLine,
                 sale
         );
 
@@ -91,9 +101,17 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         var invoice = this.findById(id);
 
-        Set<InvoiceLine> invoiceLine = dto.getInvoiceLines();
+        Sale sale = null;
+
+        if (dto.getSaleCode() != null) {
+
+            sale = this.saleService.getSaleByCode(dto.getSaleCode());
+
+        }
+
         Supplier supplier = dto.getSupplier();
-        Sale sale = dto.getSale();
+        Client client = dto.getClient();
+
         LocalDate dueDate = dto.getDueDate();
         Boolean paid = dto.getPaid();
 
@@ -103,9 +121,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setDueDate(dueDate);
         invoice.setTotalAmount(dto.getTotalAmount());
         invoice.setSupplier(supplier);
+        invoice.setClient(client);
         invoice.setPaid(paid);
         invoice.setInvoiceDate(dto.getInvoiceDate());
-        invoice.setInvoiceLines(invoiceLine);
         invoice.setSale(sale);
 
         var invoiceSaved = this.invoiceRepository.save(invoice);
