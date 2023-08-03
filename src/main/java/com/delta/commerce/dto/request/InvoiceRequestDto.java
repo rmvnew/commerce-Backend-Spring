@@ -16,6 +16,7 @@ import java.util.Set;
 public class InvoiceRequestDto {
 
     private String invoiceNumber;
+    private String invoiceSerie;
     private LocalDate  invoiceDate;
     private InvoiceTypeEnum invoiceType;
     private LocalDate dueDate;
@@ -25,4 +26,5 @@ public class InvoiceRequestDto {
     private Boolean paid;
     private LocalDate paymentDate;
     private String saleCode;
+    private String invoiceNote;
 }

@@ -26,7 +26,8 @@ public enum ErrorCustom {
     DOCUMENT_CLIENT_INVALID(HttpStatus.BAD_REQUEST, 1002, "CPF do cliente inválido"),
     DOCUMENT_SUPPLIER_INVALID(HttpStatus.BAD_REQUEST, 1003, "Document supplier invalid"),
     TOKEN_INVALID(HttpStatus.NOT_FOUND, 10000, "Token invalid"),
-    TOKEN_NOT_PROVIDED(HttpStatus.NOT_FOUND, 10001, "Token not provided");
+    TOKEN_NOT_PROVIDED(HttpStatus.NOT_FOUND, 10001, "Token not provided"),
+    INVOICE_NUMBER_INVALID(HttpStatus.NOT_FOUND, 10101, "Invoice number invalid");
 
     private final HttpStatus httpStatus;
     private final int code;

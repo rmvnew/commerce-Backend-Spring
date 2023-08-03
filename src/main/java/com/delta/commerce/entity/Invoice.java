@@ -27,6 +27,9 @@ public class Invoice {
     @Column(name = "invoice_number")
     private String invoiceNumber;
 
+    @Column(name = "invoice_serie")
+    private String invoiceSerie;
+
     @Column(name = "invoice_date")
     private LocalDate invoiceDate;
 
@@ -54,6 +57,9 @@ public class Invoice {
     @Column(name = "payment_date")
     private LocalDate paymentDate;
 
+    @Column(name = "invoice_note")
+    private String invoiceNote;
+
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     private Set<InvoiceLine> invoiceLines = new HashSet<>();
 
@@ -61,11 +67,12 @@ public class Invoice {
     @JoinColumn(name = "sale_id", nullable = true)
     private Sale sale;
 
-    public Invoice(String invoiceNumber, LocalDate invoiceDate,
-                   InvoiceTypeEnum invoiceType, LocalDate dueDate,
-                   Double totalAmount, Supplier supplier, Client client,
-                   Boolean paid, LocalDate paymentDate, Sale sale) {
+    public Invoice(String invoiceNumber, String invoiceSerie, LocalDate invoiceDate,
+                   InvoiceTypeEnum invoiceType, LocalDate dueDate, Double totalAmount,
+                   Supplier supplier, Client client, Boolean paid, LocalDate paymentDate,
+                   String invoiceNote,  Sale sale) {
         this.invoiceNumber = invoiceNumber;
+        this.invoiceSerie = invoiceSerie;
         this.invoiceDate = invoiceDate;
         this.invoiceType = invoiceType;
         this.dueDate = dueDate;
@@ -74,7 +81,7 @@ public class Invoice {
         this.client = client;
         this.paid = paid;
         this.paymentDate = paymentDate;
-
+        this.invoiceNote = invoiceNote;
         this.sale = sale;
     }
 }

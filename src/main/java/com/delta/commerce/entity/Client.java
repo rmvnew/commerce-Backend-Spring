@@ -1,6 +1,7 @@
 package com.delta.commerce.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -51,6 +52,7 @@ public class Client {
     private LocalDateTime updateAt;
 
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private Set<Invoice> invoices;
 
     @OneToOne

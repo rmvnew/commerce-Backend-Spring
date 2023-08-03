@@ -4,6 +4,7 @@ import com.delta.commerce.dto.filter.InvoiceFilter;
 import com.delta.commerce.dto.request.InvoiceRequestDto;
 import com.delta.commerce.entity.*;
 import com.delta.commerce.enums.HistoricDescriptionEnum;
+import com.delta.commerce.enums.InvoiceTypeEnum;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
 import com.delta.commerce.repository.InvoiceRepository;
@@ -11,6 +12,7 @@ import com.delta.commerce.service.HistoricService;
 import com.delta.commerce.service.InvoiceService;
 import com.delta.commerce.service.SaleService;
 import com.delta.commerce.service.UserService;
+import com.delta.commerce.utils.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +41,23 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 //        Set<InvoiceLine> invoiceLine = !dto.getInvoiceLines().isEmpty() ? dto.getInvoiceLines() : null;
 
+        String numberInvoice = null;
+
+        if (dto.getInvoiceNumber().isEmpty() && dto.getInvoiceType() == InvoiceTypeEnum.OUTPUT) {
+            var maxNumber = this.invoiceRepository.getMaxInvoiceNumber(InvoiceTypeEnum.OUTPUT);
+
+            if (maxNumber.isPresent()) {
+                Integer currentNumber = Integer.parseInt(maxNumber.get());
+                currentNumber = currentNumber+1;
+                numberInvoice = NumberUtils.getInstance().getInvoiceValidNumber(Integer.toString(currentNumber));
+            } else {
+                numberInvoice = NumberUtils.getInstance().getInvoiceValidNumber(Integer.toString(1));
+            }
+        } else {
+            numberInvoice = dto.getInvoiceNumber();
+        }
+
+
         Sale sale = null;
 
         if (dto.getSaleCode() != null) {
@@ -53,7 +72,8 @@ public class InvoiceServiceImpl implements InvoiceService {
         Boolean paid = dto.getPaid();
 
         Invoice invoice = new Invoice(
-                dto.getInvoiceNumber(),
+                numberInvoice,
+                dto.getInvoiceSerie(),
                 dto.getInvoiceDate(),
                 dto.getInvoiceType(),
                 dueDate,
@@ -62,6 +82,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                 client,
                 paid,
                 dto.getPaymentDate(),
+                dto.getInvoiceNote().isEmpty() ? "A" : dto.getInvoiceNote(),
                 sale
         );
 

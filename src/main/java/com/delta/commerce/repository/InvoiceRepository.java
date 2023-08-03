@@ -1,6 +1,7 @@
 package com.delta.commerce.repository;
 
 import com.delta.commerce.entity.Invoice;
+import com.delta.commerce.enums.InvoiceTypeEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,5 +29,12 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     );
 
     Optional<Invoice> findByInvoiceNumber(@Param("number") String number);
+
+
+    @Query("""
+            select max(i.invoiceNumber) from Invoice i
+            where i.invoiceType = :type
+            """)
+    Optional<String> getMaxInvoiceNumber(@Param("type")InvoiceTypeEnum type);
 
 }

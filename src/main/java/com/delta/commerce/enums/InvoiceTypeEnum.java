@@ -2,8 +2,8 @@ package com.delta.commerce.enums;
 
 public enum InvoiceTypeEnum {
 
-    INPUT("input"),
-    OUTPUT("output");
+    INPUT("INPUT"),
+    OUTPUT("OUTPUT");
 
 
     private final String name;
