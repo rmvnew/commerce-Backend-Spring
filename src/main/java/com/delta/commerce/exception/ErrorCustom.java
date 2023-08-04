@@ -22,6 +22,7 @@ public enum ErrorCustom {
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, 600, "Category not found"),
     CLIENT_ALREADY_EXISTS(HttpStatus.CONFLICT, 700, "Client already exists!"),
     CLIENT_NOT_FOUND(HttpStatus.NOT_FOUND, 701, "Client not found"),
+    REGISTERED_CUSTOMER_DOCUMENT(HttpStatus.NOT_FOUND, 702, "Registered customer document"),
     DOCUMENT_COMPANY_INVALID(HttpStatus.BAD_REQUEST, 1001, "Document company invalid"),
     DOCUMENT_CLIENT_INVALID(HttpStatus.BAD_REQUEST, 1002, "CPF do cliente inválido"),
     DOCUMENT_SUPPLIER_INVALID(HttpStatus.BAD_REQUEST, 1003, "Document supplier invalid"),

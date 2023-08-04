@@ -25,9 +25,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             select p from Product p
             where 
             (:productName is null or p.productName like concat('%',:productName,'%')) AND
-            (:productBarcode is null or p.productBarcode = :productBarcode) AND
-            (:productCode is null or p.productCode = :productCode) AND
-            (:productNcm is null or p.productNcm = :productNcm) AND 
+            (:productBarcode is null or p.productBarcode like concat('%',:productBarcode,'%')) AND
+            (:productCode is null or p.productCode like concat('%',:productCode,'%')) AND
+            (:productNcm is null or p.productNcm like concat('%',:productNcm,'%')) AND 
             p.isActive = true
             """)
     Page<Product> getAllProduct(

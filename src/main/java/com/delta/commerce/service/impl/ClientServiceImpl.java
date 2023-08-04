@@ -52,6 +52,18 @@ public class ClientServiceImpl implements ClientService {
             throw new CustomException(ErrorCustom.CLIENT_ALREADY_EXISTS);
         }
 
+        var cpfExists = this.clientRepository.getClientByCpf(dto.getClientCpf());
+
+        if (cpfExists.isPresent()) {
+            throw new CustomException(ErrorCustom.REGISTERED_CUSTOMER_DOCUMENT);
+        }
+
+        var cnpjExists = this.clientRepository.getClientByCnpj(dto.getClientCnpj());
+
+        if (cnpjExists.isPresent()) {
+            throw new CustomException(ErrorCustom.REGISTERED_CUSTOMER_DOCUMENT);
+        }
+
         String cpf = null;
         String cnpj = null;
 
@@ -114,14 +126,6 @@ public class ClientServiceImpl implements ClientService {
 
         var cnpj = filter.getClientCnpj() != null ? (filter.getClientCnpj() != "" ? filter.getClientCnpj().replaceAll("[^0-9]", "") : null) : null;
         var cpf = filter.getClientCpf() != null ? (filter.getClientCpf() != "" ? filter.getClientCpf().replaceAll("[^0-9]", "") : null) : null;
-
-//        if (cnpj != null && !ValidDocuments.getInstance().isCNPJ(cnpj)) {
-//            throw new IllegalArgumentException("CNPJ anválido: " + cnpj);
-//        }
-//
-//        if (cpf != null && !ValidDocuments.getInstance().isCPF(cpf)) {
-//            throw new IllegalArgumentException("CPF anválido: " + cpf);
-//        }
 
         var res = this.clientRepository.getAllClients(
                 filter.getClientName(),
