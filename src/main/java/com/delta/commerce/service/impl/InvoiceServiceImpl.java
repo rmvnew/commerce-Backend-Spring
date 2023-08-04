@@ -2,11 +2,13 @@ package com.delta.commerce.service.impl;
 
 import com.delta.commerce.dto.filter.InvoiceFilter;
 import com.delta.commerce.dto.request.InvoiceRequestDto;
+import com.delta.commerce.dto.response.invoice.InvoiceResponseDto;
 import com.delta.commerce.entity.*;
 import com.delta.commerce.enums.HistoricDescriptionEnum;
 import com.delta.commerce.enums.InvoiceTypeEnum;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
+import com.delta.commerce.mappers.InvoiceMapper;
 import com.delta.commerce.repository.InvoiceRepository;
 import com.delta.commerce.service.HistoricService;
 import com.delta.commerce.service.InvoiceService;
@@ -19,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -35,6 +36,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
     private SaleService saleService;
+
+    @Autowired
+    private InvoiceMapper invoiceMapper;
+
 
     @Override
     public void createInvoice(InvoiceRequestDto dto) {
@@ -95,13 +100,15 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Page<Invoice> getAllInvoice(InvoiceFilter filter, Pageable page) {
+    public Page<InvoiceResponseDto> getAllInvoice(InvoiceFilter filter, Pageable page) {
 
         var initialDate = filter.getInitialDate() != null ? filter.getInitialDate() : null;
         var finalDate = filter.getFinalDate() != null ? filter.getFinalDate() : null;
         var invoiceNumber = filter.getInvoiceNumber() != null ? !filter.getInvoiceNumber().equals("") ? filter.getInvoiceNumber() : null : null;
 
-        return this.invoiceRepository.getAllInvoices(initialDate, finalDate, invoiceNumber, page);
+        Page<Invoice> res = this.invoiceRepository.getAllInvoices(initialDate, finalDate, invoiceNumber, page);
+
+        return res.map(invoiceMapper::toDto);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.delta.commerce.controller;
 
 import com.delta.commerce.dto.filter.InvoiceFilter;
 import com.delta.commerce.dto.request.InvoiceRequestDto;
+import com.delta.commerce.dto.response.invoice.InvoiceResponseDto;
 import com.delta.commerce.entity.Invoice;
 import com.delta.commerce.service.InvoiceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,6 +24,8 @@ public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
 
+
+
     @PostMapping
     public void createInvoice(
             @RequestBody @Valid InvoiceRequestDto dto
@@ -32,7 +35,7 @@ public class InvoiceController {
 
 
     @GetMapping
-    public ResponseEntity<Page<Invoice>> getAll(
+    public ResponseEntity<Page<InvoiceResponseDto>> getAll(
             @RequestParam(value = "initDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate initDate,
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
             @RequestParam(name = "invoiceNumber", required = false) String invoiceNumber,

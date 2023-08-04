@@ -3,6 +3,7 @@ package com.delta.commerce.service.impl;
 import com.delta.commerce.dto.filter.ProductFilter;
 import com.delta.commerce.dto.request.AddProductsRequestDto;
 import com.delta.commerce.dto.request.ProductRequestDto;
+import com.delta.commerce.dto.response.product.ProductResponseDto;
 import com.delta.commerce.entity.Category;
 import com.delta.commerce.entity.Invoice;
 import com.delta.commerce.entity.InvoiceLine;
@@ -10,6 +11,7 @@ import com.delta.commerce.entity.Product;
 import com.delta.commerce.enums.HistoricDescriptionEnum;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
+import com.delta.commerce.mappers.ProductMapper;
 import com.delta.commerce.repository.CategoryRepository;
 import com.delta.commerce.repository.InvoiceLineRepository;
 import com.delta.commerce.repository.ProductRepository;
@@ -45,6 +47,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private HistoricService historicService;
+
+    @Autowired
+    private ProductMapper productMapper;
 
     @Override
     public Product createProduct(ProductRequestDto dto) {
@@ -101,16 +106,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getAllProducts(ProductFilter filter, Pageable page) {
+    public Page<ProductResponseDto> getAllProducts(ProductFilter filter, Pageable page) {
 
 
-        return this.productRepository.getAllProduct(
+        Page<Product> products = this.productRepository.getAllProduct(
                 filter.getProductName(),
                 filter.getProductBarcode() != null ? (filter.getProductBarcode() != "" ? filter.getProductBarcode() : null) : null,
                 filter.getProductCode() != null ? (filter.getProductCode() != "" ? filter.getProductCode() : null) : null,
                 filter.getProductNcm() != null ? (filter.getProductNcm() != "" ? filter.getProductNcm() : null) : null,
                 page
         );
+
+        return products.map(productMapper::toDto);
     }
 
     @Override
@@ -135,13 +142,20 @@ public class ProductServiceImpl implements ProductService {
         var productSaved = this.productRepository.save(product);
 
         if (dto.getInvoiceNumber() != null && !dto.getInvoiceNumber().equals("")) {
-            var invoice = this.invoiceService.findByNumber(dto.getInvoiceNumber());
-            var invoiceLine = new InvoiceLine();
-            invoiceLine.setInvoice(invoice);
-            invoiceLine.setProduct(productSaved);
-            invoiceLine.setQuantity(dto.getProductQuantity());
 
-            this.invoiceLineRepository.save(invoiceLine);
+            Invoice invoice = this.invoiceService.findByNumber(dto.getInvoiceNumber());
+
+            if (!(invoice.getInvoiceLines().size() > 0)) {
+
+                var invoiceLine = new InvoiceLine();
+                saveInvoiceLine(invoiceLine, invoice, productSaved, dto.getProductQuantity());
+            } else {
+                invoice.getInvoiceLines().forEach(data -> {
+                    saveInvoiceLine(data, invoice, productSaved, dto.getProductQuantity());
+                });
+
+            }
+
         }
 
         this.historicService.saveHistoric(
@@ -151,6 +165,14 @@ public class ProductServiceImpl implements ProductService {
         return productSaved;
 
 
+    }
+
+    private void saveInvoiceLine(InvoiceLine invoiceLine, Invoice invoice, Product productSaved, Double dto) {
+        invoiceLine.setInvoice(invoice);
+        invoiceLine.setProduct(productSaved);
+        invoiceLine.setQuantity(dto);
+
+        this.invoiceLineRepository.save(invoiceLine);
     }
 
     @Override

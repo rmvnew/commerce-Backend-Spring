@@ -79,7 +79,7 @@ public class Product {
     private List<SaleProduct> saleProducts;
 
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<InvoiceLine> invoiceLines = new HashSet<>();
 
     public Product(String productName, String productBarcode, String productLocation,
