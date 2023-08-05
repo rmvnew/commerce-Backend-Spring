@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/category")
 @Tag(name = "Category", description = "Controller para serviços de categorias")
@@ -34,6 +36,32 @@ public class CategoryController {
             Pageable pageable
     ) {
         return ResponseEntity.ok(this.categoryService.getAllCategories(name, pageable));
+    }
+
+    @GetMapping(value = "/all")
+    @PreAuthorize("hasAnyAuthority('ADMIN_READ','USER_READ')")
+    public ResponseEntity<List<Category>> getAll(
+            @RequestParam(name = "name",required = false) String name
+    ) {
+        return ResponseEntity.ok(this.categoryService.getAll(name));
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN_WRITE','USER_WRITE')")
+    public ResponseEntity<Category> update(
+            @PathVariable Long id,
+            @RequestBody CategoryRequestDto dto
+    ) {
+        return ResponseEntity.ok(this.categoryService.updateCategory(dto, id));
+    }
+
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN_WRITE','USER_WRITE')")
+    public void delete(
+            @PathVariable Long id
+    ) {
+        this.categoryService.delete(id);
     }
 
 }
