@@ -52,20 +52,10 @@ public class ClientServiceImpl implements ClientService {
             throw new CustomException(ErrorCustom.CLIENT_ALREADY_EXISTS);
         }
 
-        var cpfExists = this.clientRepository.getClientByCpf(dto.getClientCpf());
 
-        if (cpfExists.isPresent()) {
-            throw new CustomException(ErrorCustom.REGISTERED_CUSTOMER_DOCUMENT);
-        }
 
-        var cnpjExists = this.clientRepository.getClientByCnpj(dto.getClientCnpj());
-
-        if (cnpjExists.isPresent()) {
-            throw new CustomException(ErrorCustom.REGISTERED_CUSTOMER_DOCUMENT);
-        }
-
-        String cpf = null;
-        String cnpj = null;
+        String cpf = "";
+        String cnpj = "";
 
         if (dto.isCompany()) {
             if (ValidDocuments.getInstance().isCNPJ(dto.getClientCnpj())) {
@@ -82,6 +72,18 @@ public class ClientServiceImpl implements ClientService {
             }
         }
 
+
+        var cpfExists = this.clientRepository.getClientByCpf(cpf);
+
+        if (cpfExists.isPresent()) {
+            throw new CustomException(ErrorCustom.REGISTERED_CUSTOMER_DOCUMENT);
+        }
+
+        var cnpjExists = this.clientRepository.getClientByCnpj(cnpj);
+
+        if (cnpjExists.isPresent()) {
+            throw new CustomException(ErrorCustom.REGISTERED_CUSTOMER_DOCUMENT);
+        }
 
         var address = new Address();
         address.setZipcode(dto.getAddressRequestDto().getZipcode());
@@ -104,6 +106,7 @@ public class ClientServiceImpl implements ClientService {
         client.setCreateAt(LocalDateTime.now());
         client.setUpdateAt(LocalDateTime.now());
         client.setAddress(addressSaved);
+        client.setCompany(dto.isCompany());
 
         var clientSaved = this.clientRepository.save(client);
 

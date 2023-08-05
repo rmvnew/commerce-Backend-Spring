@@ -48,16 +48,14 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Query("""
             select c from Client c
-            where c.isActive = true AND 
-            c.clientCpf = :cpf
+            where c.clientCpf = :cpf
             """)
     Optional<Client> getClientByCpf(@Param("cpf") String cpf);
 
 
     @Query("""
             select c from Client c
-            where c.isActive = true AND 
-            c.clientCnpj = :cnpj
+            where c.clientCnpj = :cnpj
             """)
     Optional<Client> getClientByCnpj(@Param("cnpj") String cnpj);
 
