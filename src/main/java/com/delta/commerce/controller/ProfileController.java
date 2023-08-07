@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/profile")
@@ -36,6 +37,13 @@ public class ProfileController {
             Pageable pageable
     ) {
         return ResponseEntity.ok(this.profileService.getAllProfiles(name, pageable));
+    }
+
+
+    @GetMapping(value = "/all")
+    @PreAuthorize("hasAuthority('ADMIN_READ')")
+    public ResponseEntity<List<Profile>> getListProfiles() {
+        return ResponseEntity.ok(this.profileService.getListProfiles());
     }
 
 

@@ -17,7 +17,7 @@ public class CreateUserRequestDto {
     private String userEmail;
 
     @NotBlank
-    @Size(min = 4,max = 10)
+    @Size(min = 6,max = 25,message = "A senha deve ter entre 6 a 25 caracteres!")
     private String userPassword;
 
     @Size(min = 3,max = 7)

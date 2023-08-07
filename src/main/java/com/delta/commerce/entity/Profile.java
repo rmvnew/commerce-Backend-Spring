@@ -34,7 +34,7 @@ public class Profile {
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
-    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "profile")
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 

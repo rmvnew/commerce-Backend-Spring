@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,7 +48,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-    @PreAuthorize("hasAnyAuthority('USER_WRITE','ADMIN_WRITE')")
+    @PreAuthorize("hasAuthority('ADMIN_WRITE')")
     public ResponseEntity<UserResponse> updateUser(
             @RequestBody @Valid UpdateUserRequestDto dto,
             @PathVariable Long id

@@ -110,14 +110,14 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        if (dto.getRole() != null) {
+        if (dto.getProfileId() != null) {
 
 //            Set<Profile> roles = dto.getRoles().stream()
 //                    .map(roleId -> this.profileRepository.findById((long) roleId))
 //                    .flatMap(optionalRole -> optionalRole.stream())
 //                    .collect(Collectors.toSet());
 
-            var role = this.profileRepository.findById((long)dto.getRole())
+            var role = this.profileRepository.findById((long)dto.getProfileId())
                     .orElseThrow(()-> new CustomException(ErrorCustom.NOT_FOUND));
 
             user.setProfile(role);
