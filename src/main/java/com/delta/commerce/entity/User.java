@@ -50,12 +50,9 @@ public class User implements UserDetails {
     @Column(name = "create_at")
     private LocalDateTime createAt;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_profile",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "profile_id"))
-    private Set<Profile> profiles;
+    @ManyToOne
+    @JoinColumn(name="profile_id", nullable=false)
+    private Profile profile;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Sale> sales;
@@ -69,20 +66,27 @@ public class User implements UserDetails {
     public User(String userCompleteName, String userEmail,
                 String userPassword, String userEnrollment,
                 boolean isActive,
-                LocalDateTime createAt, Set<Profile> profiles) {
+                LocalDateTime createAt, Profile profile) {
         this.userCompleteName = userCompleteName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userEnrollment = userEnrollment;
         this.isActive = isActive;
         this.createAt = createAt;
-        this.profiles = profiles;
+        this.profile = profile;
     }
+
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return profiles.stream()
+//                .flatMap(profile -> profile.getTransactions().stream())
+//                .map(transaction -> new SimpleGrantedAuthority(transaction.getTransactionName()))
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return profiles.stream()
-                .flatMap(profile -> profile.getTransactions().stream())
+        return profile.getTransactions().stream()
                 .map(transaction -> new SimpleGrantedAuthority(transaction.getTransactionName()))
                 .collect(Collectors.toList());
     }

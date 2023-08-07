@@ -13,6 +13,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,7 +53,7 @@ public class SysadminInitializer implements ApplicationListener<ContextRefreshed
     private void createUserWithSysadminRole() {
 
         Set<Transaction> transactions = new HashSet<>();
-        Set<Profile> profiles = new HashSet<>();
+
 
 
         if (transactionsRepository.count() == 0) {
@@ -60,15 +61,18 @@ public class SysadminInitializer implements ApplicationListener<ContextRefreshed
             transactions.add(transactionsRepository.save(new Transaction("ADMIN_READ")));
         }
 
-        if (profileRepository.count() == 0) {
-            var profile = new Profile();
-            profile.setTransactions(transactions);
-            profile.setProfileName("ADMIN");
-            profiles.add(profileRepository.save(profile));
-        }
+
+            var currentProfile = new Profile();
+            currentProfile.setTransactions(transactions);
+            currentProfile.setActive(true);
+            currentProfile.setUpdateAt(LocalDateTime.now());
+            currentProfile.setCreateAt(LocalDateTime.now());
+            currentProfile.setProfileName("ADMIN");
+            var profileSaved = profileRepository.save(currentProfile);
+
 
         var user = new User();
-        user.setProfiles(profiles);
+        user.setProfile(profileSaved);
         user.setUserEmail(email);
         user.setUserEnrollment("00001");
         user.setUserPassword(passwordEncoder.encode(password));

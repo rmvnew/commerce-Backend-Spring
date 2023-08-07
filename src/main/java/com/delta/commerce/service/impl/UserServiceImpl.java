@@ -60,12 +60,15 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(ErrorCustom.USER_ALREADY_EXISTS);
         }
 
-        Set<Profile> profiles = new HashSet<>();
+//        Set<Profile> profiles = new HashSet<>();
+//
+//        for (Integer role : dto.getProfiles()) {
+//            profiles.add(this.profileRepository.findById((long) role)
+//                    .orElseThrow(() -> new CustomException(ErrorCustom.ROLE_NOT_EXISTS)));
+//        }
 
-        for (Integer role : dto.getProfiles()) {
-            profiles.add(this.profileRepository.findById((long) role)
-                    .orElseThrow(() -> new CustomException(ErrorCustom.ROLE_NOT_EXISTS)));
-        }
+        var profile = this.profileRepository.findById((long)dto.getProfileId())
+                .orElseThrow(()-> new CustomException(ErrorCustom.NOT_FOUND));
 
         User user = new User(
                 dto.getUserCompleteName().toUpperCase(),
@@ -74,7 +77,7 @@ public class UserServiceImpl implements UserService {
                 dto.getUserEnrollment(),
                 true,
                 LocalDateTime.now(),
-                profiles
+                profile
         );
 
         this.userRepository.save(user);
@@ -95,8 +98,10 @@ public class UserServiceImpl implements UserService {
 
         var currentUser = this.getLoggedInUser();
 
-        var isAdmin = currentUser.getProfiles().stream()
-                .anyMatch(profile -> profile.getProfileName().equalsIgnoreCase("ADMIN"));
+//        var isAdmin = currentUser.getProfiles().stream()
+//                .anyMatch(profile -> profile.getProfileName().equalsIgnoreCase("ADMIN"));
+
+        var isAdmin = currentUser.getProfile().getProfileName().equalsIgnoreCase("ADMIN");
 
         if (!isAdmin) {
             if (!this.isUserLoggedIn(user)) {
@@ -105,12 +110,18 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        if (!dto.getRoles().isEmpty()) {
-            Set<Profile> roles = dto.getRoles().stream()
-                    .map(roleId -> this.profileRepository.findById((long) roleId))
-                    .flatMap(optionalRole -> optionalRole.stream())
-                    .collect(Collectors.toSet());
-            user.setProfiles(roles);
+        if (dto.getRole() != null) {
+
+//            Set<Profile> roles = dto.getRoles().stream()
+//                    .map(roleId -> this.profileRepository.findById((long) roleId))
+//                    .flatMap(optionalRole -> optionalRole.stream())
+//                    .collect(Collectors.toSet());
+
+            var role = this.profileRepository.findById((long)dto.getRole())
+                    .orElseThrow(()-> new CustomException(ErrorCustom.NOT_FOUND));
+
+            user.setProfile(role);
+
         }
 
         user.setUserCompleteName(dto.getUserCompleteName().toUpperCase());

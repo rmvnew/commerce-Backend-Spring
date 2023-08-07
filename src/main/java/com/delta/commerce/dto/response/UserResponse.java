@@ -4,7 +4,6 @@ import com.delta.commerce.entity.Profile;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Data
 public class UserResponse {
@@ -14,6 +13,6 @@ public class UserResponse {
     private String userEmail;
     private boolean isActive;
     private LocalDateTime createAt;
-    Set<Profile> profiles;
+    Profile profile;
 }
 

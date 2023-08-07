@@ -34,6 +34,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ADMIN_WRITE')")
     public void createUser(@RequestBody @Valid CreateUserRequestDto dto) {
+
         this.userService.createUser(dto);
     }
 

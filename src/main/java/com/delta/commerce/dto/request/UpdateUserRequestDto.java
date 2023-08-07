@@ -26,6 +26,6 @@ public class UpdateUserRequestDto {
 
     @NotEmpty
     @ToString.Exclude
-    Set<Integer> roles;
+    Integer role;
 
 }

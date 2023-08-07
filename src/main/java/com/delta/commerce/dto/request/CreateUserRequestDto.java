@@ -2,14 +2,8 @@ package com.delta.commerce.dto.request;
 
 
 import lombok.Data;
-import lombok.ToString;
 
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.util.Set;
+import javax.validation.constraints.*;
 
 @Data
 public class CreateUserRequestDto {
@@ -29,8 +23,7 @@ public class CreateUserRequestDto {
     @Size(min = 3,max = 7)
     private String userEnrollment;
 
-    @NotEmpty
-    @ToString.Exclude
-    Set<Integer> profiles;
+    @NotNull
+    Integer profileId;
 
 }
