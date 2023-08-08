@@ -14,8 +14,11 @@ import com.delta.commerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -101,22 +104,34 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void changeStatus(Long id) {
+    public void deleteProfile(Long id) {
 
         var profile = this.findById(id);
-        profile.setActive(false);
-        var profileSaved = this.profileRepository.save(profile);
+        var profileId = profile.getProfileId();
+        this.profileRepository.delete(profile);
 
         this.historicService.saveHistoric(
-                Profile.class, profileSaved.getProfileId(), this.userService.getLoggedInUser(),
-                HistoricDescriptionEnum.PROFILE_DESACTIVED
+                Profile.class, profileId, this.userService.getLoggedInUser(),
+                HistoricDescriptionEnum.PROFILE_DELETE
         );
 
     }
 
     @Override
-    public List<Profile> getListProfiles() {
-        return this.profileRepository.findAll();
+    public List<Profile> getListProfiles(String name) {
+
+        Specification<Profile> spec = (root, query, criteriaBuilder) ->{
+
+                Predicate isActivePredicate = criteriaBuilder.isTrue(root.get("isActive"));
+            if (name != null && !name.trim().isEmpty()) {
+                Predicate nameLikePredicate = criteriaBuilder.like(root.get("profileName"), "%" + name + "%");
+                return criteriaBuilder.and(isActivePredicate,nameLikePredicate);
+            } else {
+                return isActivePredicate;
+            }
+        };
+
+        return this.profileRepository.findAll(spec, Sort.by(Sort.Direction.DESC,"profileId"));
     }
 
 

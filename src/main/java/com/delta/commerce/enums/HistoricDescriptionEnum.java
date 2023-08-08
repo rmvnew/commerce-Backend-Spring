@@ -20,6 +20,7 @@ public enum HistoricDescriptionEnum {
     PROFILE_CREATE("Perfil cadastrado"),
     PROFILE_UPDATE("Perfil atualizada"),
     PROFILE_DESACTIVED("Perfil desativado"),
+    PROFILE_DELETE("Perfil deletado"),
 
     CLIENT_CREATE("Cliente cadastrado"),
     CLIENT_UPDATE("Cliente atualizado"),

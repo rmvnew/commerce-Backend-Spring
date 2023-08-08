@@ -42,8 +42,10 @@ public class ProfileController {
 
     @GetMapping(value = "/all")
     @PreAuthorize("hasAuthority('ADMIN_READ')")
-    public ResponseEntity<List<Profile>> getListProfiles() {
-        return ResponseEntity.ok(this.profileService.getListProfiles());
+    public ResponseEntity<List<Profile>> getListProfiles(
+            @RequestParam(name = "name", required = false) String name
+    ) {
+        return ResponseEntity.ok(this.profileService.getListProfiles(name));
     }
 
 
@@ -58,12 +60,12 @@ public class ProfileController {
     }
 
 
-    @PatchMapping("/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN_WRITE')")
-    public void changeStatus(
+    public void delete(
             @PathVariable Long id
     ) {
-        this.profileService.changeStatus(id);
+        this.profileService.deleteProfile(id);
     }
 
 

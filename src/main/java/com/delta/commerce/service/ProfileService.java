@@ -17,8 +17,8 @@ public interface ProfileService {
 
     Profile updateProfile(ProfileRequestDto dto, Long id);
 
-    void changeStatus(Long id);
+    void deleteProfile(Long id);
 
-    List<Profile> getListProfiles();
+    List<Profile> getListProfiles(String name);
 
 }
