@@ -5,7 +5,6 @@ import com.delta.commerce.dto.request.CreateUserRequestDto;
 import com.delta.commerce.dto.request.RecoverPassRequestDto;
 import com.delta.commerce.dto.request.UpdateUserRequestDto;
 import com.delta.commerce.dto.response.UserResponse;
-import com.delta.commerce.entity.Profile;
 import com.delta.commerce.entity.User;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -86,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<UserResponse> getAllUsers(String name, Pageable pageable) {
-        return this.userRepository.findUsersByUserCompleteNameContainingIgnoreCase(name, pageable)
+        return this.userRepository.getAllUsers(name, pageable)
                 .map(userMapper::toDto);
     }
 
