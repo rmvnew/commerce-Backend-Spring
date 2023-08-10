@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -29,6 +30,14 @@ public class ProductController {
             @RequestBody @Valid ProductRequestDto dto
     ) {
         return ResponseEntity.ok(this.productService.createProduct(dto));
+    }
+
+    @PostMapping(value = "/import")
+    @PreAuthorize("hasAnyAuthority('USER_WRITE','ADMIN_WRITE')")
+    public void uploadFileProducts(
+            @RequestParam("file") MultipartFile file
+    ) {
+        this.productService.importFromCSVFile(file);
     }
 
     @GetMapping(value = "/{id}")
@@ -75,8 +84,6 @@ public class ProductController {
     ) {
         this.productService.changeStatus(id);
     }
-
-
 
 
 }

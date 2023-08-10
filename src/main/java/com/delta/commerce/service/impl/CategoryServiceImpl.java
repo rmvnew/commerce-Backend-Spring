@@ -34,13 +34,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findById(Long id) {
         return this.categoryRepository.findById(id)
-                .orElseThrow(()-> new CustomException(ErrorCustom.NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCustom.NOT_FOUND));
     }
 
     @Override
     public List<Category> getAll(String name) {
 
-        Specification<Category> spec = (root,query,criteriaBuilder) ->{
+        Specification<Category> spec = (root, query, criteriaBuilder) -> {
             if (name != null && !name.trim().isEmpty()) {
                 return criteriaBuilder.like(root.get("categoryName"), "%" + name + "%");
             } else {
@@ -48,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
             }
         };
 
-        return this.categoryRepository.findAll(spec,Sort.by(Sort.Direction.DESC,"categoryId"));
+        return this.categoryRepository.findAll(spec, Sort.by(Sort.Direction.DESC, "categoryId"));
     }
 
     @Override
@@ -66,6 +66,16 @@ public class CategoryServiceImpl implements CategoryService {
         var category = this.findById(id);
 
         this.categoryRepository.delete(category);
+    }
+
+    @Override
+    public Category findByCategoryName(String name) {
+        var res = this.categoryRepository.findByName(name);
+
+        if (res.isPresent()) {
+            return res.get();
+        }
+        return null;
     }
 
 

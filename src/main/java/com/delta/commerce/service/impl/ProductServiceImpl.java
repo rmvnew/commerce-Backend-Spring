@@ -15,16 +15,20 @@ import com.delta.commerce.mappers.ProductMapper;
 import com.delta.commerce.repository.CategoryRepository;
 import com.delta.commerce.repository.InvoiceLineRepository;
 import com.delta.commerce.repository.ProductRepository;
-import com.delta.commerce.service.HistoricService;
-import com.delta.commerce.service.InvoiceService;
-import com.delta.commerce.service.ProductService;
-import com.delta.commerce.service.UserService;
+import com.delta.commerce.service.*;
+import com.opencsv.CSVReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -50,6 +54,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Override
     public Product createProduct(ProductRequestDto dto) {
@@ -216,6 +223,57 @@ public class ProductServiceImpl implements ProductService {
         this.historicService.saveHistoric(
                 Product.class, productSaved.getProductId(),
                 this.userService.getLoggedInUser(), HistoricDescriptionEnum.PRODUCT_CREATE);
+
+    }
+
+    @Override
+    public void importFromCSVFile(MultipartFile file) {
+        List<ProductRequestDto> products = new ArrayList<>();
+        List<Product> createdProducts = new ArrayList<>();
+        try (Reader reader = new InputStreamReader(file.getInputStream())) {
+
+            CSVReader csvReader = new CSVReader(reader);
+            String[] nextRecord;
+
+            // Pula o cabeçalho
+            csvReader.readNext();
+
+            while ((nextRecord = csvReader.readNext()) != null) {
+
+                var category = this.categoryService.findByCategoryName(nextRecord[11]);
+
+                var prod = new ProductRequestDto();
+
+                prod.setProductName(nextRecord[0]);
+                prod.setProductBarcode(nextRecord[1]);
+                prod.setProductCode(nextRecord[2]);
+                prod.setProductLocation(nextRecord[3]);
+                prod.setProductNcm(nextRecord[4]);
+                prod.setProductCfop(nextRecord[5]);
+                prod.setProductUnitOfMeasurement(nextRecord[6]);
+                prod.setProductQuantity(Double.parseDouble(nextRecord[7]));
+                prod.setProductMinimumStock(Double.parseDouble(nextRecord[8]));
+                prod.setProductUnitCost(BigDecimal.valueOf(Double.parseDouble(nextRecord[9])));
+                prod.setProductUnitPrice(BigDecimal.valueOf(Double.parseDouble(nextRecord[10])));
+                prod.setCategoryId(category.getCategoryId());
+
+
+
+                products.add(prod);
+            }
+
+
+            for(ProductRequestDto pro: products){
+
+               createdProducts.add(this.createProduct(pro));
+
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: "+ e.getMessage());
+        }
+
+
 
     }
 

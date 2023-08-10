@@ -8,6 +8,7 @@ import com.delta.commerce.entity.Category;
 import com.delta.commerce.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ProductService {
 
@@ -24,4 +25,6 @@ public interface ProductService {
     Product addProductsToStock(AddProductsRequestDto dto, String barcode);
 
     void changeStatus(Long id);
+
+    void importFromCSVFile(MultipartFile file);
 }

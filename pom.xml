@@ -107,6 +107,12 @@
                 <version>0.9.1</version> <!-- verifique se esta é a versão mais recente -->
             </dependency>
 
+        <!-- OpenCSV -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.5</version>
+        </dependency>
 
 
 
