@@ -1,6 +1,7 @@
 package com.delta.commerce.service.impl;
 
 import com.delta.commerce.dto.request.SaleRequestDto;
+import com.delta.commerce.entity.Client;
 import com.delta.commerce.entity.Product;
 import com.delta.commerce.entity.Sale;
 import com.delta.commerce.entity.SaleProduct;
@@ -44,18 +45,21 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public void createSale(SaleRequestDto dto) {
 
-        var invoice = this.invoiceRepository.findById(dto.getInvoice_id());
-        var client = this.clientRepository.findById(dto.getClient_id());
+
         BigDecimal totalValue = BigDecimal.ZERO;
 
         var sale = new Sale();
         sale.setSaleCode(UUID.randomUUID().toString());
         sale.setCreateAt(LocalDateTime.now());
         sale.setSaleProducts(null);
-        sale.setInvoice(invoice.orElse(null));
         sale.setUser(userService.getLoggedInUser());
-        sale.setClient(client.orElse(null));
-        sale.setTotalValue(totalValue);
+
+        sale.setTotalValue(dto.getTotalValue());
+
+        if (dto.getClientId() != null) {
+            var client = this.clientRepository.findById(dto.getClientId());
+            sale.setClient(client.orElse(null));
+        }
 
         var saleSaved = this.saleRepository.save(sale);
 
