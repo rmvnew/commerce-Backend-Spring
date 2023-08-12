@@ -19,6 +19,6 @@ public class ClientResponseDto {
     private LocalDateTime createAt;
     private String telephone;
     private AddressResponseDto address;
-    private Set<Sale> sales;
+//    private Set<Sale> sales;
 
 }

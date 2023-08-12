@@ -1,9 +1,7 @@
 package com.delta.commerce.mappers;
 
-import com.delta.commerce.dto.response.ProductSaleResponseDto;
 import com.delta.commerce.dto.response.SaleResponseDto;
 import com.delta.commerce.entity.Sale;
-import com.delta.commerce.entity.SaleProduct;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -12,6 +10,8 @@ import org.mapstruct.Mapping;
 public interface SaleMapper {
 
     @Mapping(source = "sale.saleProducts", target = "saleProductResponseDtos")
+    @Mapping(source = "sale.user", target = "userResponse")
+    @Mapping(source = "sale.client", target = "clientResponseDto")
     SaleResponseDto toDto(Sale sale);
 
 

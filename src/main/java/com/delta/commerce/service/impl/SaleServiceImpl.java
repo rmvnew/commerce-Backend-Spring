@@ -57,6 +57,9 @@ public class SaleServiceImpl implements SaleService {
 
         BigDecimal totalValue = BigDecimal.ZERO;
 
+        var userLogued = this.userService.getLoggedInUser();
+        var userByFront = this.userService.findById(dto.getUserId());
+
         var sale = new Sale();
         sale.setSaleCode(UUID.randomUUID().toString());
         sale.setCreateAt(LocalDateTime.now());
