@@ -3,7 +3,7 @@ package com.delta.commerce.service.impl;
 import com.delta.commerce.dto.filter.ProductFilter;
 import com.delta.commerce.dto.request.AddProductsRequestDto;
 import com.delta.commerce.dto.request.ProductRequestDto;
-import com.delta.commerce.dto.response.product.ProductResponseDto;
+import com.delta.commerce.dto.response.ProductSaleResponseDto;
 import com.delta.commerce.entity.Category;
 import com.delta.commerce.entity.Invoice;
 import com.delta.commerce.entity.InvoiceLine;
@@ -113,7 +113,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponseDto> getAllProducts(ProductFilter filter, Pageable page) {
+    public Page<ProductSaleResponseDto> getAllProducts(ProductFilter filter, Pageable page) {
 
 
         Page<Product> products = this.productRepository.getAllProduct(

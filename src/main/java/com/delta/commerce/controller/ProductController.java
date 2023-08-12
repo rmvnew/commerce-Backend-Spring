@@ -2,7 +2,7 @@ package com.delta.commerce.controller;
 
 import com.delta.commerce.dto.filter.ProductFilter;
 import com.delta.commerce.dto.request.ProductRequestDto;
-import com.delta.commerce.dto.response.product.ProductResponseDto;
+import com.delta.commerce.dto.response.ProductSaleResponseDto;
 import com.delta.commerce.entity.Product;
 import com.delta.commerce.service.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -50,7 +50,7 @@ public class ProductController {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('USER_READ','ADMIN_READ')")
-    public ResponseEntity<Page<ProductResponseDto>> getAllProduct(
+    public ResponseEntity<Page<ProductSaleResponseDto>> getAllProduct(
 
             @RequestParam(name = "productName", required = false) String productName,
             @RequestParam(name = "productBarcode", required = false) String productBarcode,

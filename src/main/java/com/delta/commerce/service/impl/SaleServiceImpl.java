@@ -1,16 +1,21 @@
 package com.delta.commerce.service.impl;
 
 import com.delta.commerce.dto.request.SaleRequestDto;
+import com.delta.commerce.dto.response.SaleResponseDto;
 import com.delta.commerce.entity.Client;
 import com.delta.commerce.entity.Product;
 import com.delta.commerce.entity.Sale;
 import com.delta.commerce.entity.SaleProduct;
 import com.delta.commerce.exception.CustomException;
 import com.delta.commerce.exception.ErrorCustom;
+import com.delta.commerce.mappers.SaleMapper;
 import com.delta.commerce.repository.*;
 import com.delta.commerce.service.SaleService;
 import com.delta.commerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class SaleServiceImpl implements SaleService {
@@ -40,6 +46,9 @@ public class SaleServiceImpl implements SaleService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private SaleMapper saleMapper;
 
 
     @Override
@@ -98,5 +107,15 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public Sale getSaleByCode(String code) {
         return this.saleRepository.getSaleByCode(code);
+    }
+
+    @Override
+    public Page<SaleResponseDto> getAllSales(Pageable page) {
+
+        var res = this.saleRepository.getAllSales(page);
+
+        var sales = res.stream().map(saleMapper::toDto).collect(Collectors.toList());
+
+        return new PageImpl<>(sales,page, res.getTotalElements());
     }
 }
